@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  fml:
+    container_name: fml-webserver
+    hostname: fml
+    env_file:
+        - ops/env.sh
+    build:
+        context: .
+        dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    restart: on-failure:5
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres:10-alpine
+    container_name: fml-postgres
+    environment:
+      - POSTGRES_USER=fml2019
+      - POSTGRES_PASSWORD=fml2019
+    volumes:
+      - fml-data-postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    container_name: fml-redis
+    volumes:
+      - fml-data-redis:/data
+
+volumes:
+  fml-data-postgres:
+  fml-data-redis:
