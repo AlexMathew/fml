@@ -12,6 +12,8 @@ django = "*"
 requests = "*"
 graphene-django = "*"
 psycopg2 = "*"
+django-graphql-jwt = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.7"
