@@ -1,15 +1,16 @@
 import django_filters
 import graphene
+from django.contrib.auth import get_user_model
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
-from django.contrib.auth.models import User
 
 from .models import Player
 
 
 class UserNode(DjangoObjectType):
     class Meta:
-        model = User
+        model = get_user_model()
+        only_fields = ('id', 'username', 'email')
 
 
 class PlayerFilter(django_filters.FilterSet):
@@ -37,17 +38,16 @@ class CreatePlayer(graphene.relay.ClientIDMutation):
     class Input:
         username = graphene.String()
         email = graphene.String()
+        password = graphene.String()
 
     def mutate_and_get_payload(self, info, **input):
-        user = User(
+        user = get_user_model()(
             username=input.get('username'),
             email=input.get('email'),
         )
+        user.set_password(input.get('password'))
         user.save()
-        player = Player(
-            user=user,
-        )
-        player.save()
+        player = Player.objects.get(user=user)
 
         return CreatePlayer(player=player)
 
