@@ -7,6 +7,11 @@ from django.contrib.auth.models import User
 from .models import Player
 
 
+class UserNode(DjangoObjectType):
+    class Meta:
+        model = User
+
+
 class PlayerFilter(django_filters.FilterSet):
     class Meta:
         model = Player
@@ -14,6 +19,8 @@ class PlayerFilter(django_filters.FilterSet):
 
 
 class PlayerNode(DjangoObjectType):
+    user = graphene.Field(UserNode)
+
     class Meta:
         model = Player
         interfaces = (graphene.relay.Node,)
