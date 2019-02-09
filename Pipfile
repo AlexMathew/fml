@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-ipython = "*"
 isort = "*"
 
 [packages]
@@ -14,6 +13,7 @@ graphene-django = "*"
 psycopg2 = "*"
 django-graphql-jwt = "*"
 django-filter = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.7"
