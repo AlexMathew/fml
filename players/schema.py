@@ -47,7 +47,10 @@ class CreatePlayer(graphene.relay.ClientIDMutation):
         )
         user.set_password(input.get('password'))
         user.save()
-        player = Player.objects.get(user=user)
+
+        player = Player.objects.create(
+            user=user,
+        )
 
         return CreatePlayer(player=player)
 
