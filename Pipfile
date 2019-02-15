@@ -14,6 +14,8 @@ psycopg2 = "*"
 django-graphql-jwt = "*"
 django-filter = "*"
 ipython = "*"
+boto3 = "*"
+redis = "*"
 
 [requires]
 python_version = "3.7"
