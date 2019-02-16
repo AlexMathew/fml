@@ -10,12 +10,12 @@ isort = "*"
 django = "*"
 requests = "*"
 graphene-django = "*"
-psycopg2 = "*"
 django-graphql-jwt = "*"
 django-filter = "*"
 ipython = "*"
 boto3 = "*"
 redis = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.7"

@@ -20,13 +20,15 @@ services:
       - "8000:8000"
 
   db:
-    image: postgres:10-alpine
-    container_name: fml-postgres
+    image: mysql:5.6
+    container_name: fml-mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
     environment:
-      - POSTGRES_USER=fml2019
-      - POSTGRES_PASSWORD=fml2019
+      - MYSQL_ROOT_PASSWORD=fml2019
+      - MYSQL_DATABASE=fml2019
     volumes:
-      - fml-data-postgres:/var/lib/postgresql/data
+      - fml-data-mysql:/var/lib/mysql
 
   redis:
     image: redis
@@ -35,5 +37,5 @@ services:
       - fml-data-redis:/data
 
 volumes:
-  fml-data-postgres:
+  fml-data-mysql:
   fml-data-redis:
