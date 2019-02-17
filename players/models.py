@@ -8,6 +8,12 @@ class Player(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __repr__(self):
+        return self.user.username
+
+    def __str__(self):
+        return self.user.username
+
 
 @receiver(post_delete, sender=Player)
 def delete_user_of_profile(sender, instance, **kwargs):

@@ -24,11 +24,30 @@ class Marblelympics(models.Model):
     teams = models.ManyToManyField(Team, related_name='marblelympics')
     total_players = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ['year']
+
     def __repr__(self):
         return f'ML{self.year}'
 
     def __str__(self):
         return f'ML{self.year}'
+
+
+class Event(models.Model):
+    ml = models.ForeignKey(Marblelympics, on_delete=models.CASCADE, related_name='events')
+    number = models.IntegerField(null=False, blank=False)
+    name = models.CharField(max_length=256, null=False, blank=False)
+
+    class Meta:
+        unique_together = ('ml', 'number')
+        ordering = ['ml', 'number']
+
+    def __repr__(self):
+        return f'{self.ml} #{self.number} - {self.name}'
+
+    def __str__(self):
+        return f'{self.ml} #{self.number} - {self.name}'
 
 
 class FantasyPlayer(models.Model):
@@ -41,6 +60,33 @@ class FantasyPlayer(models.Model):
             models.Index(fields=['marblelympics', 'player'], name='participant_index'),
             models.Index(fields=['player'], name='player_index'),
         ]
+
+    def __repr__(self):
+        return f'{self.marblelympics} - {self.player}'
+
+    def __str__(self):
+        return f'{self.marblelympics} - {self.player}'
+
+
+class PlayerEntry(models.Model):
+    player = models.ForeignKey(FantasyPlayer, on_delete=models.CASCADE, related_name='event_entries')
+    event = models.ForeignKey(Event, on_delete=models.PROTECT, related_name='player_entries')
+    points = models.IntegerField(default=0)
+    rank = models.IntegerField(default=-1)
+
+    class Meta:
+        unique_together = ('player', 'event')
+        indexes = [
+            models.Index(fields=['event', 'player'], name='entry_index'),
+            models.Index(fields=['player'], name='player_entry_index'),
+        ]
+        ordering = ['event', 'rank']
+
+    def __repr__(self):
+        return f'{self.event} - {self.player} - Points: {self.points} - Rank: {self.rank}'
+
+    def __str__(self):
+        return f'{self.event} - {self.player} - Points: {self.points} - Rank: {self.rank}'
 
 
 @receiver(pre_save, sender=Marblelympics)
