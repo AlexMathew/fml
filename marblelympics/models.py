@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import m2m_changed, post_delete
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from players.models import Player
@@ -9,14 +9,26 @@ from players.models import Player
 
 class Team(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    host = models.BooleanField(default=False)
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
 
 class Marblelympics(models.Model):
-    year = models.CharField(max_length=4, unique=True)
-    total_players = models.IntegerField(default=0)
+    year = models.CharField(max_length=4, primary_key=True)
+    host = models.ForeignKey(Team, related_name='ml_hosted', on_delete=models.PROTECT, null=True)
     team_count = models.IntegerField(default=0)
     teams = models.ManyToManyField(Team, related_name='marblelympics')
+    total_players = models.IntegerField(default=0)
+
+    def __repr__(self):
+        return f'ML{self.year}'
+
+    def __str__(self):
+        return f'ML{self.year}'
 
 
 class FantasyPlayer(models.Model):
@@ -31,7 +43,7 @@ class FantasyPlayer(models.Model):
         ]
 
 
-@receiver(m2m_changed, sender=Marblelympics)
+@receiver(pre_save, sender=Marblelympics)
 def check_number_of_teams(sender, instance, **kwargs):
     """
     """
