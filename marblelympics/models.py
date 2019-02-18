@@ -19,6 +19,7 @@ class Team(models.Model):
 
 class Marblelympics(models.Model):
     year = models.CharField(max_length=4, primary_key=True)
+    active = models.BooleanField(default=False)
     host = models.ForeignKey(Team, related_name='ml_hosted', on_delete=models.PROTECT, null=True)
     team_count = models.IntegerField(default=0)
     teams = models.ManyToManyField(Team, related_name='marblelympics')
@@ -28,10 +29,10 @@ class Marblelympics(models.Model):
         ordering = ['year']
 
     def __repr__(self):
-        return f'ML{self.year}'
+        return f"ML{self.year}{' - ACTIVE' if self.active else ''}"
 
     def __str__(self):
-        return f'ML{self.year}'
+        return f"ML{self.year}{' - ACTIVE' if self.active else ''}"
 
 
 class Event(models.Model):
@@ -93,5 +94,9 @@ class PlayerEntry(models.Model):
 def check_number_of_teams(sender, instance, **kwargs):
     """
     """
+    active_ml = Marblelympics.objects.filter(active=True)
+    if instance.active and (active_ml.count() > 0 and active_ml.first() != instance):
+        raise ValidationError("Only 1 active ML is allowed")
+
     if instance.teams.count() > instance.team_count:
         raise ValidationError(f"ML{instance.year} can only have {instance.team_count} teams")
