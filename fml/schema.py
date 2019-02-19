@@ -1,11 +1,13 @@
 import graphene
 import graphql_jwt
 
+import marblelympics.schema
 import players.schema
 
 
 class Query(
     players.schema.Query,
+    marblelympics.schema.Query,
     graphene.ObjectType,
 ):
     pass
