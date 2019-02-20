@@ -29,7 +29,7 @@ class EventNode(DjangoObjectType):
         model = Event
         interfaces = (graphene.relay.Node,)
         filter_fields = {
-            'ml': ['exact'],
+            'ml__active': ['exact'],
         }
 
 
@@ -38,7 +38,7 @@ class FantasyPlayerNode(DjangoObjectType):
         model = FantasyPlayer
         interfaces = (graphene.relay.Node,)
         filter_fields = {
-
+            'marblelympics__active': ['exact'],
         }
 
 class PlayerEntryNode(DjangoObjectType):
@@ -46,7 +46,7 @@ class PlayerEntryNode(DjangoObjectType):
         model = PlayerEntry
         interfaces = (graphene.relay.Node,)
         filter_fields = {
-
+            'player__marblelympics__active': ['exact'],
         }
 
 class Query(graphene.ObjectType):
