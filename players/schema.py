@@ -26,6 +26,14 @@ class PlayerNode(DjangoObjectType):
 class Query(graphene.ObjectType):
     player = graphene.relay.Node.Field(PlayerNode)
     players = DjangoFilterConnectionField(PlayerNode)
+    me = graphene.Field(PlayerNode)
+
+    def resolve_me(self, info, **kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+
+        return user.player
 
 
 class CreatePlayer(graphene.relay.ClientIDMutation):
