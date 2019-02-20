@@ -22,7 +22,7 @@ class Marblelympics(models.Model):
     active = models.BooleanField(default=False)
     host = models.ForeignKey(Team, related_name='ml_hosted', on_delete=models.PROTECT, null=True)
     team_count = models.IntegerField(default=0)
-    teams = models.ManyToManyField(Team, related_name='marblelympics')
+    teams = models.ManyToManyField(Team, related_name='ml_participated')
     total_players = models.IntegerField(default=0)
 
     class Meta:
@@ -52,8 +52,8 @@ class Event(models.Model):
 
 
 class FantasyPlayer(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='marblelympics')
-    marblelympics = models.ForeignKey(Marblelympics, on_delete=models.PROTECT, related_name='players')
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='marblelympics_participated')
+    marblelympics = models.ForeignKey(Marblelympics, on_delete=models.PROTECT, related_name='players_participating')
 
     class Meta:
         unique_together = ('player', 'marblelympics')

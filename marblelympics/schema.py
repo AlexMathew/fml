@@ -11,7 +11,7 @@ class TeamNode(DjangoObjectType):
         interfaces = (graphene.relay.Node,)
         filter_fields = {
             'name': ['exact', 'icontains', 'istartswith'],
-            'marblelympics': ['exact'],
+            'ml_participated': ['exact'],
         }
 
 
