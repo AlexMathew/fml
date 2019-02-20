@@ -11,6 +11,7 @@ class TeamNode(DjangoObjectType):
         interfaces = (graphene.relay.Node,)
         filter_fields = {
             'name': ['exact', 'icontains', 'istartswith'],
+            'marblelympics': ['exact'],
         }
 
 
@@ -30,7 +31,7 @@ class EventNode(DjangoObjectType):
         model = Event
         interfaces = (graphene.relay.Node,)
         filter_fields = {
-
+            'ml': ['exact'],
         }
 
 
