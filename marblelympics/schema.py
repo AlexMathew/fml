@@ -16,8 +16,6 @@ class TeamNode(DjangoObjectType):
 
 
 class MLNode(DjangoObjectType):
-    host = graphene.Field(TeamNode)
-
     class Meta:
         model = Marblelympics
         interfaces = (graphene.relay.Node,)
@@ -35,9 +33,29 @@ class EventNode(DjangoObjectType):
         }
 
 
+class FantasyPlayerNode(DjangoObjectType):
+    class Meta:
+        model = FantasyPlayer
+        interfaces = (graphene.relay.Node,)
+        filter_fields = {
+
+        }
+
+class PlayerEntryNode(DjangoObjectType):
+    class Meta:
+        model = PlayerEntry
+        interfaces = (graphene.relay.Node,)
+        filter_fields = {
+
+        }
+
 class Query(graphene.ObjectType):
     team = graphene.relay.Node.Field(TeamNode)
     teams = DjangoFilterConnectionField(TeamNode)
     marblelympics = DjangoFilterConnectionField(MLNode)
     event = graphene.relay.Node.Field(EventNode)
     events = DjangoFilterConnectionField(EventNode)
+    fplayer = graphene.relay.Node.Field(FantasyPlayerNode)
+    fplayers = DjangoFilterConnectionField(FantasyPlayerNode)
+    fplayer_entry = graphene.relay.Node.Field(PlayerEntryNode)
+    fplayer_entries = DjangoFilterConnectionField(PlayerEntryNode)
