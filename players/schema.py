@@ -1,4 +1,3 @@
-import django_filters
 import graphene
 from django.contrib.auth import get_user_model
 from graphene_django import DjangoObjectType
@@ -13,23 +12,20 @@ class UserNode(DjangoObjectType):
         only_fields = ('id', 'username', 'email')
 
 
-class PlayerFilter(django_filters.FilterSet):
-    class Meta:
-        model = Player
-        fields = ['created_at']
-
-
 class PlayerNode(DjangoObjectType):
     user = graphene.Field(UserNode)
 
     class Meta:
         model = Player
         interfaces = (graphene.relay.Node,)
+        filter_fields = {
+            'created_at': ['exact'],
+        }
 
 
 class Query(graphene.ObjectType):
     player = graphene.relay.Node.Field(PlayerNode)
-    players = DjangoFilterConnectionField(PlayerNode, filterset_class=PlayerFilter)
+    players = DjangoFilterConnectionField(PlayerNode)
 
 
 class CreatePlayer(graphene.relay.ClientIDMutation):
