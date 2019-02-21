@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 
@@ -20,3 +20,19 @@ def delete_user_of_profile(sender, instance, **kwargs):
     """
     """
     instance.user.delete()
+
+
+@receiver(post_save, sender=Player)
+def create_fantasy_player(sender, instance, created, **kwargs):
+    """
+    """
+    if created:
+        from marblelympics.models import FantasyPlayer, Marblelympics
+        marblelympics = Marblelympics.objects.filter(active=True).first()
+
+        if not marblelympics:
+            raise Exception("No active ML")
+
+        FantasyPlayer.objects.create(
+            player=instance, marblelympics=marblelympics
+        )
