@@ -146,8 +146,12 @@ def validate_selections(sender, instance, **kwargs):
     if len(set(selections.values())) != 3:
         raise ValidationError("3 unique teams should be selected per entry")
 
+    if list(selections.keys()) != ['1', '2', '3']:
+        raise ValidationError(
+            "Keys for the selection should be the position (1/2/3)"
+        )
+
     for name in selections.values():
-        print(name)
         team = Team.objects.filter(name=name).first()
 
         if not team:

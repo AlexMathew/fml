@@ -1,3 +1,5 @@
+import json
+
 import graphene
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
@@ -41,13 +43,32 @@ class FantasyPlayerNode(DjangoObjectType):
             'marblelympics__active': ['exact'],
         }
 
+
+class SelectionNode(graphene.ObjectType):
+    position = graphene.Int()
+    team = graphene.Field(TeamNode)
+
+
 class PlayerEntryNode(DjangoObjectType):
+    selections = graphene.List(SelectionNode)
+
     class Meta:
         model = PlayerEntry
         interfaces = (graphene.relay.Node,)
         filter_fields = {
             'player__marblelympics__active': ['exact'],
         }
+
+    def resolve_selections(self, info, **kwargs):
+        selections = json.loads(self.selections)
+        return [
+            SelectionNode(
+                position=int(position),
+                team=Team.objects.get(name=name),
+            )
+            for position, name in selections.items()
+        ]
+
 
 class Query(graphene.ObjectType):
     team = graphene.relay.Node.Field(TeamNode)
