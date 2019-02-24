@@ -139,4 +139,21 @@ def check_number_of_teams(sender, instance, **kwargs):
 def validate_selections(sender, instance, **kwargs):
     """
     """
-    pass
+    selections = json.loads(instance.selections)
+    if len(selections) != 3:
+        raise ValidationError("3 team selections should be made per entry")
+
+    if len(set(selections.values())) != 3:
+        raise ValidationError("3 unique teams should be selected per entry")
+
+    for name in selections.values():
+        print(name)
+        team = Team.objects.filter(name=name).first()
+
+        if not team:
+            raise ValidationError(f"No team named {name}")
+
+        if team not in instance.event.ml.teams.all():
+            raise ValidationError(
+                f"{name} is not a part of ML{instance.event.ml.year}"
+            )
