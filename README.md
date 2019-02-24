@@ -2,7 +2,7 @@
 
 Hopefully, will be done before ML2019.
 
------
+---
 
 GraphQL query to get all data for authenticated user:
 
@@ -20,13 +20,6 @@ query {
       edges {
         node {
           id
-          player {
-            id
-            user {
-              id
-              username
-            }
-          }
           marblelympics {
             id
             year
@@ -61,13 +54,6 @@ query {
                 id
                 player {
                   id
-                  player {
-                    id
-                    user {
-                      id
-                      username
-                    }
-                  }
                 }
                 event {
                   id
@@ -79,6 +65,13 @@ query {
                 }
                 points
                 rank
+                selections {
+                  position
+                  team {
+                    id
+                    name
+                  }
+                }
               }
             }
           }
