@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -20,7 +22,9 @@ class Team(models.Model):
 class Marblelympics(models.Model):
     year = models.CharField(max_length=4, primary_key=True)
     active = models.BooleanField(default=False)
-    host = models.ForeignKey(Team, related_name='ml_hosted', on_delete=models.PROTECT, null=True)
+    host = models.ForeignKey(
+        Team, related_name='ml_hosted', on_delete=models.PROTECT, null=True
+    )
     team_count = models.IntegerField(default=0)
     teams = models.ManyToManyField(Team, related_name='ml_participated')
     total_players = models.IntegerField(default=0)
@@ -36,7 +40,9 @@ class Marblelympics(models.Model):
 
 
 class Event(models.Model):
-    ml = models.ForeignKey(Marblelympics, on_delete=models.CASCADE, related_name='events')
+    ml = models.ForeignKey(
+        Marblelympics, on_delete=models.CASCADE, related_name='events'
+    )
     number = models.IntegerField(null=False, blank=False)
     name = models.CharField(max_length=256, null=False, blank=False)
 
@@ -52,13 +58,20 @@ class Event(models.Model):
 
 
 class FantasyPlayer(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='marblelympics_participated')
-    marblelympics = models.ForeignKey(Marblelympics, on_delete=models.PROTECT, related_name='players_participating')
+    player = models.ForeignKey(
+        Player, on_delete=models.CASCADE, related_name='marblelympics_participated'
+    )
+    marblelympics = models.ForeignKey(
+        Marblelympics, on_delete=models.PROTECT, related_name='players_participating'
+    )
 
     class Meta:
         unique_together = ('player', 'marblelympics')
         indexes = [
-            models.Index(fields=['marblelympics', 'player'], name='participant_index'),
+            models.Index(
+                fields=['marblelympics', 'player'],
+                name='participant_index'
+            ),
             models.Index(fields=['player'], name='player_index'),
         ]
 
@@ -69,11 +82,29 @@ class FantasyPlayer(models.Model):
         return f'{self.marblelympics} - {self.player}'
 
 
+def validate_entry_selections_string(value):
+    try:
+        _ = json.loads(value)
+
+    except json.JSONDecodeError:
+        raise ValidationError(f'Selections should be a valid JSON string')
+
+
 class PlayerEntry(models.Model):
-    player = models.ForeignKey(FantasyPlayer, on_delete=models.CASCADE, related_name='event_entries')
-    event = models.ForeignKey(Event, on_delete=models.PROTECT, related_name='player_entries')
+    player = models.ForeignKey(
+        FantasyPlayer, on_delete=models.CASCADE, related_name='event_entries'
+    )
+    event = models.ForeignKey(
+        Event, on_delete=models.PROTECT, related_name='player_entries'
+    )
     points = models.IntegerField(default=0)
     rank = models.IntegerField(default=-1)
+    selections = models.CharField(
+        max_length=2000,
+        null=False,
+        default='{}',
+        validators=[validate_entry_selections_string]
+    )
 
     class Meta:
         unique_together = ('player', 'event')
@@ -99,4 +130,13 @@ def check_number_of_teams(sender, instance, **kwargs):
         raise ValidationError("Only 1 active ML is allowed")
 
     if instance.teams.count() > instance.team_count:
-        raise ValidationError(f"ML{instance.year} can only have {instance.team_count} teams")
+        raise ValidationError(
+            f"ML{instance.year} can only have {instance.team_count} teams"
+        )
+
+
+@receiver(pre_save, sender=PlayerEntry)
+def validate_selections(sender, instance, **kwargs):
+    """
+    """
+    pass
