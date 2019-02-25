@@ -140,8 +140,8 @@ def check_number_of_teams(sender, instance, **kwargs):
 def validate_selections(sender, instance, **kwargs):
     """
     """
-    original = PlayerEntry.objects.get(id=instance.id)
-    if original.selections != instance.selections:
+    original = PlayerEntry.objects.filter(id=instance.id).first()
+    if (original.selections if original else None) != instance.selections:
         if instance.event.locked:
             raise Exception("Event is locked")
 

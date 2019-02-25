@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
+from services.authentication import GraphqlAuthentication
+
 from .models import Player
 
 
@@ -32,9 +34,7 @@ class MeQuery(graphene.ObjectType):
     me = graphene.Field(PlayerNode)
 
     def resolve_me(self, info, **kwargs):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception("Not logged in!")
+        user = GraphqlAuthentication.get_user(self, info, **kwargs)
 
         return user.player
 
