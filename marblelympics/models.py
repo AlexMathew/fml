@@ -139,25 +139,28 @@ def check_number_of_teams(sender, instance, **kwargs):
 def validate_selections(sender, instance, **kwargs):
     """
     """
-    selections = json.loads(instance.selections)
-    if len(selections) != 3:
-        raise ValidationError("3 team selections should be made per entry")
+    original = PlayerEntry.objects.get(id=instance.id)
+    if original.selections != instance.selections:
+        selections = json.loads(instance.selections)
+        if len(selections) != 3:
+            raise ValidationError("3 team selections should be made per entry")
 
-    if len(set(selections.values())) != 3:
-        raise ValidationError("3 unique teams should be selected per entry")
-
-    if list(selections.keys()) != ['1', '2', '3']:
-        raise ValidationError(
-            "Keys for the selection should be the position (1/2/3)"
-        )
-
-    for name in selections.values():
-        team = Team.objects.filter(name=name).first()
-
-        if not team:
-            raise ValidationError(f"No team named {name}")
-
-        if team not in instance.event.ml.teams.all():
+        if len(set(selections.values())) != 3:
             raise ValidationError(
-                f"{name} is not a part of ML{instance.event.ml.year}"
+                "3 unique teams should be selected per entry")
+
+        if list(selections.keys()) != ['1', '2', '3']:
+            raise ValidationError(
+                "Keys for the selection should be the position (1/2/3)"
             )
+
+        for name in selections.values():
+            team = Team.objects.filter(name=name).first()
+
+            if not team:
+                raise ValidationError(f"No team named {name}")
+
+            if team not in instance.event.ml.teams.all():
+                raise ValidationError(
+                    f"{name} is not a part of ML{instance.event.ml.year}"
+                )
