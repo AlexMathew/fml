@@ -44,6 +44,7 @@ query {
                   }
                   number
                   name
+                  locked
                 }
               }
             }

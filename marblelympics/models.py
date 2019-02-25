@@ -33,10 +33,10 @@ class Marblelympics(models.Model):
         ordering = ['year']
 
     def __repr__(self):
-        return f"ML{self.year}{' - ACTIVE' if self.active else ''}"
+        return f"ML{self.year}{' (ACTIVE)' if self.active else ''}"
 
     def __str__(self):
-        return f"ML{self.year}{' - ACTIVE' if self.active else ''}"
+        return f"ML{self.year}{' (ACTIVE)' if self.active else ''}"
 
 
 class Event(models.Model):
@@ -45,16 +45,17 @@ class Event(models.Model):
     )
     number = models.IntegerField(null=False, blank=False)
     name = models.CharField(max_length=256, null=False, blank=False)
+    locked = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('ml', 'number')
         ordering = ['ml', 'number']
 
     def __repr__(self):
-        return f'{self.ml} #{self.number} - {self.name}'
+        return f"{self.ml} #{self.number} - {self.name}{' (LOCKED)' if self.locked else ''}"
 
     def __str__(self):
-        return f'{self.ml} #{self.number} - {self.name}'
+        return f"{self.ml} #{self.number} - {self.name}{' (LOCKED)' if self.locked else ''}"
 
 
 class FantasyPlayer(models.Model):
@@ -141,6 +142,9 @@ def validate_selections(sender, instance, **kwargs):
     """
     original = PlayerEntry.objects.get(id=instance.id)
     if original.selections != instance.selections:
+        if instance.event.locked:
+            raise Exception("Event is locked")
+
         selections = json.loads(instance.selections)
         if len(selections) != 3:
             raise ValidationError("3 team selections should be made per entry")
