@@ -26,6 +26,9 @@ class PlayerNode(DjangoObjectType):
 class Query(graphene.ObjectType):
     player = graphene.relay.Node.Field(PlayerNode)
     players = DjangoFilterConnectionField(PlayerNode)
+
+
+class MeQuery(graphene.ObjectType):
     me = graphene.Field(PlayerNode)
 
     def resolve_me(self, info, **kwargs):

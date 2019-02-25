@@ -6,8 +6,9 @@ import players.schema
 
 
 class Query(
-    players.schema.Query,
-    marblelympics.schema.Query,
+    # players.schema.Query,
+    players.schema.MeQuery,
+    # marblelympics.schema.Query,
     graphene.ObjectType,
 ):
     pass
