@@ -84,7 +84,7 @@ class Query(graphene.ObjectType):
     fplayer_entries = DjangoFilterConnectionField(PlayerEntryNode)
 
 
-class CreatePlayerEntry(graphene.relay.ClientIDMutation):
+class UpsertPlayerEntry(graphene.relay.ClientIDMutation):
     entry = graphene.Field(PlayerEntryNode)
 
     class Input:
@@ -120,23 +120,23 @@ class CreatePlayerEntry(graphene.relay.ClientIDMutation):
                 marblelympics=ml,
             )
 
-        if PlayerEntry.objects.filter(event=event, player=fplayer).first():
-            raise Exception("Entry already exists for this event")
+        entry = PlayerEntry.objects.filter(
+            event=event, player=fplayer
+        ).first() or PlayerEntry()
 
-        entry = PlayerEntry.objects.create(
-            event=event,
-            player=fplayer,
-            selections=json.dumps(
-                {
-                    '1': input.get('team_1') or '',
-                    '2': input.get('team_2') or '',
-                    '3': input.get('team_3') or '',
-                }
-            )
+        entry.event = event
+        entry.player = fplayer
+        entry.selections = json.dumps(
+            {
+                '1': input.get('team_1') or '',
+                '2': input.get('team_2') or '',
+                '3': input.get('team_3') or '',
+            }
         )
+        entry.save()
 
-        return CreatePlayerEntry(entry=entry)
+        return UpsertPlayerEntry(entry=entry)
 
 
 class Mutation(graphene.AbstractType):
-    create_player_entry = CreatePlayerEntry.Field()
+    upsert_player_entry = UpsertPlayerEntry.Field()
