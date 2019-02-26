@@ -65,6 +65,8 @@ class FantasyPlayer(models.Model):
     marblelympics = models.ForeignKey(
         Marblelympics, on_delete=models.PROTECT, related_name='players_participating'
     )
+    points = models.IntegerField(default=0)
+    rank = models.IntegerField(default=-1)
 
     class Meta:
         unique_together = ('player', 'marblelympics')
@@ -77,10 +79,10 @@ class FantasyPlayer(models.Model):
         ]
 
     def __repr__(self):
-        return f'{self.marblelympics} - {self.player}'
+        return f'{self.marblelympics} - {self.player} - Points: {self.points} - Rank: {self.rank}'
 
     def __str__(self):
-        return f'{self.marblelympics} - {self.player}'
+        return f'{self.marblelympics} - {self.player} - Points: {self.points} - Rank: {self.rank}'
 
 
 def validate_entry_selections_string(value):
