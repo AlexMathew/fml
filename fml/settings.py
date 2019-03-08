@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'players',
     'marblelympics',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,5 @@ GRAPHENE = {
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ],
 }
+
+CORS_ORIGIN_ALLOW_ALL = True

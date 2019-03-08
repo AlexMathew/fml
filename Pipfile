@@ -15,6 +15,7 @@ ipython = "*"
 boto3 = "*"
 redis = "*"
 mysqlclient = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"

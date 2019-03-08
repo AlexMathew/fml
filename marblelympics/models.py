@@ -30,6 +30,8 @@ class Marblelympics(models.Model):
     total_players = models.IntegerField(default=0)
 
     class Meta:
+        verbose_name = 'Marblelympics'
+        verbose_name_plural = 'Marblelympics'
         ordering = ['year']
 
     def __repr__(self):
@@ -48,6 +50,8 @@ class Event(models.Model):
     locked = models.BooleanField(default=False)
 
     class Meta:
+        verbose_name = 'Marblelympics Event'
+        verbose_name_plural = 'Marblelympics Events'
         unique_together = ('ml', 'number')
         ordering = ['ml', 'number']
 
@@ -69,6 +73,8 @@ class FantasyPlayer(models.Model):
     rank = models.IntegerField(default=-1)
 
     class Meta:
+        verbose_name = 'Fantasy Player'
+        verbose_name_plural = 'Fantasy Players'
         unique_together = ('player', 'marblelympics')
         indexes = [
             models.Index(
@@ -110,6 +116,8 @@ class PlayerEntry(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Player Event Entry'
+        verbose_name_plural = 'Player Event Entries'
         unique_together = ('player', 'event')
         indexes = [
             models.Index(fields=['event', 'player'], name='entry_index'),
