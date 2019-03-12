@@ -1,0 +1,1 @@
+export const AUTH_TOKEN_FIELD = "FML_AUTH_TOKEN";
