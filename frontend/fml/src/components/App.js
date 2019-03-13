@@ -1,18 +1,21 @@
 import React, { Component } from "react";
-import "../styles/App.css";
-import { Query } from "react-apollo";
-import { ME_QUERY } from "../queries";
+import Game from "./Game";
+import Authentication from "./Authentication";
+import Header from "./Header";
+import { Switch, Route } from "react-router-dom";
 
 class App extends Component {
   render() {
     return (
-      <Query query={ME_QUERY}>
-        {({ loading, error, data }) => {
-          if (loading) return <div>Fetching</div>;
-          if (error) return <div>Error</div>;
-          return <div>{JSON.stringify(data)}</div>;
-        }}
-      </Query>
+      <div>
+        <Header />
+        <div>
+          <Switch>
+            <Route exact path="/" component={Game} />
+            <Route exact path="/login" component={Authentication} />
+          </Switch>
+        </div>
+      </div>
     );
   }
 }
