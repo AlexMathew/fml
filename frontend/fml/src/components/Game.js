@@ -4,6 +4,7 @@ import EventList from "./EventList";
 class Game extends Component {
   state = {
     profile: {},
+    marblelympics: {},
     teams: {},
     events: {}
   };
@@ -18,13 +19,13 @@ class Game extends Component {
     const data = this.props.data;
     const { id, email, username } = data.me.user;
     const profile = { id, email, username };
-    const teams = this.arrayToObject(
-      data.me.marblelympicsParticipated.edges[0].node.marblelympics.teams.edges
-    );
-    const events = this.arrayToObject(
-      data.me.marblelympicsParticipated.edges[0].node.marblelympics.events.edges
-    );
-    this.setState({ profile, teams, events });
+    const marblelympics =
+      data.me.marblelympicsParticipated.edges[0].node.marblelympics;
+    const teams = this.arrayToObject(marblelympics.teams.edges);
+    const events = this.arrayToObject(marblelympics.events.edges);
+    delete marblelympics["teams"];
+    delete marblelympics["events"];
+    this.setState({ profile, marblelympics, teams, events });
   }
 
   render() {
