@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Header from "./Header";
 import EventList from "./EventList";
 
 class Game extends Component {
@@ -31,6 +32,7 @@ class Game extends Component {
   render() {
     return (
       <React.Fragment>
+        <Header history={this.props.history} />
         <EventList events={this.state.events} />
       </React.Fragment>
     );
