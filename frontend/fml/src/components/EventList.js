@@ -31,7 +31,7 @@ class EventList extends React.Component {
           <div className={classes.demo}>
             <List>
               {Object.keys(this.props.events).map(key => (
-                <ListItem>
+                <ListItem key={key}>
                   <ListItemAvatar>
                     <Avatar>{this.props.events[key].number}</Avatar>
                   </ListItemAvatar>

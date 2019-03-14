@@ -47,7 +47,7 @@ class Header extends React.Component {
                 logout();
               }}
             >
-              Login
+              Logout
             </Button>
           </Toolbar>
         </AppBar>
