@@ -7,7 +7,8 @@ class Game extends Component {
     profile: {},
     marblelympics: {},
     teams: {},
-    events: {}
+    events: {},
+    currentEvent: {}
   };
 
   arrayToObject = array =>
@@ -26,14 +27,24 @@ class Game extends Component {
     const events = this.arrayToObject(marblelympics.events.edges);
     delete marblelympics["teams"];
     delete marblelympics["events"];
-    this.setState({ profile, marblelympics, teams, events });
+    const currentEvent = events[Object.keys(events)[0]];
+    this.setState({ profile, marblelympics, teams, events, currentEvent });
   }
+
+  switchEvent = key => {
+    const currentEvent = this.state.events[key];
+    this.setState({ currentEvent });
+  };
 
   render() {
     return (
       <React.Fragment>
-        <Header history={this.props.history} />
-        <EventList events={this.state.events} />
+        <Header
+          history={this.props.history}
+          year={this.state.marblelympics.year}
+          currentEvent={this.state.currentEvent}
+        />
+        <EventList events={this.state.events} switchEvent={this.switchEvent} />
       </React.Fragment>
     );
   }

@@ -20,37 +20,44 @@ const styles = {
   }
 };
 
-function ButtonAppBar(props) {
-  const { classes } = props;
+class Header extends React.Component {
+  render() {
+    const { classes } = this.props;
 
-  const logout = () => {
-    localStorage.removeItem(AUTH_TOKEN_FIELD);
-    props.history.push("/login");
-  };
+    const logout = () => {
+      localStorage.removeItem(AUTH_TOKEN_FIELD);
+      this.props.history.push("/login");
+    };
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            FML
-          </Typography>
-          <Button
-            color="inherit"
-            onClick={() => {
-              logout();
-            }}
-          >
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              FML {this.props.year}{" "}
+              {this.props.currentEvent
+                ? `- ${this.props.currentEvent.number}: ${
+                    this.props.currentEvent.name
+                  }`
+                : ""}
+            </Typography>
+            <Button
+              color="inherit"
+              onClick={() => {
+                logout();
+              }}
+            >
+              Login
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
 }
 
-ButtonAppBar.propTypes = {
+Header.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ButtonAppBar);
+export default withStyles(styles)(Header);

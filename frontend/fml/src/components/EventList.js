@@ -37,7 +37,10 @@ class EventList extends React.Component {
                   </ListItemAvatar>
                   <ListItemText primary={this.props.events[key].name} />
                   <ListItemSecondaryAction>
-                    <IconButton aria-label="go-to-event">
+                    <IconButton
+                      aria-label="go-to-event"
+                      onClick={() => this.props.switchEvent(key)}
+                    >
                       <ArrowForwardIos />
                     </IconButton>
                   </ListItemSecondaryAction>
