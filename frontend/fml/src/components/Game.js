@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import EventList from "./EventList";
 
 class Game extends Component {
   state = {
@@ -27,7 +28,11 @@ class Game extends Component {
   }
 
   render() {
-    return <div />;
+    return (
+      <React.Fragment>
+        <EventList events={this.state.events} />
+      </React.Fragment>
+    );
   }
 }
 
