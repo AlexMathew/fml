@@ -6,6 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { AUTH_TOKEN_FIELD } from "../constants";
+import Lock from "@material-ui/icons/Lock";
 
 const styles = theme => ({
   root: {
@@ -43,6 +44,11 @@ class Header extends React.Component {
                     this.props.currentEvent.name
                   }`
                 : ""}
+              {this.props.currentEvent && this.props.currentEvent.locked ? (
+                <Lock offset={10} />
+              ) : (
+                ""
+              )}
             </Typography>
             <Button
               color="inherit"
