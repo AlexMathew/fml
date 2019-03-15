@@ -1,6 +1,15 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 import Header from "./Header";
 import EventList from "./EventList";
+import SelectionBoard from "./SelectionBoard";
+
+const styles = () => ({
+  root: {
+    display: "flex"
+  }
+});
 
 class Game extends Component {
   state = {
@@ -37,6 +46,8 @@ class Game extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
       <React.Fragment>
         <Header
@@ -44,10 +55,20 @@ class Game extends Component {
           year={this.state.marblelympics.year}
           currentEvent={this.state.currentEvent}
         />
-        <EventList events={this.state.events} switchEvent={this.switchEvent} />
+        <div className={classes.root}>
+          <EventList
+            events={this.state.events}
+            switchEvent={this.switchEvent}
+          />
+          <SelectionBoard />
+        </div>
       </React.Fragment>
     );
   }
 }
 
-export default Game;
+Game.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Game);
