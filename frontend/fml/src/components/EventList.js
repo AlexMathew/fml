@@ -6,19 +6,32 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
-import Grid from "@material-ui/core/Grid";
+import Drawer from "@material-ui/core/Drawer";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
 
+const drawerWidth = 320;
+
 const styles = theme => ({
   root: {
-    flexGrow: 1,
-    maxWidth: 640
+    display: "flex"
   },
-  demo: {
-    backgroundColor: theme.palette.background.paper
-  }
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: drawerWidth
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3
+  },
+  toolbar: theme.mixins.toolbar
 });
 
 class EventList extends React.Component {
@@ -26,30 +39,33 @@ class EventList extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
-        <Grid item xs={12} md={6}>
-          <div className={classes.demo}>
-            <List>
-              {Object.keys(this.props.events).map(key => (
-                <ListItem key={key}>
-                  <ListItemAvatar>
-                    <Avatar>{this.props.events[key].number}</Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={this.props.events[key].name} />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="go-to-event"
-                      onClick={() => this.props.switchEvent(key)}
-                    >
-                      <ArrowForwardIos />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          </div>
-        </Grid>
-      </div>
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper
+        }}
+      >
+        <div className={classes.toolbar} />
+        <List>
+          {Object.keys(this.props.events).map(key => (
+            <ListItem key={key}>
+              <ListItemAvatar>
+                <Avatar>{this.props.events[key].number}</Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={this.props.events[key].name} />
+              <ListItemSecondaryAction>
+                <IconButton
+                  aria-label="go-to-event"
+                  onClick={() => this.props.switchEvent(key)}
+                >
+                  <ArrowForwardIos />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
     );
   }
 }

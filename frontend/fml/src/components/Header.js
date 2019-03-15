@@ -7,9 +7,12 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { AUTH_TOKEN_FIELD } from "../constants";
 
-const styles = {
+const styles = theme => ({
   root: {
-    flexGrow: 1
+    display: "flex"
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
   },
   grow: {
     flexGrow: 1
@@ -18,7 +21,7 @@ const styles = {
     marginLeft: -12,
     marginRight: 20
   }
-};
+});
 
 class Header extends React.Component {
   render() {
@@ -31,7 +34,7 @@ class Header extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" className={classes.appBar}>
           <Toolbar>
             <Typography variant="h6" color="inherit" className={classes.grow}>
               FML {this.props.year}{" "}
