@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Header from "./Header";
 import EventList from "./EventList";
 import GameSection from "./GameSection";
+import InfoDrawer from "./InfoDrawer";
 
 const styles = () => ({
   root: {
@@ -33,7 +34,8 @@ class Game extends Component {
   componentDidMount() {
     const data = this.props.data;
     const { id, email, username } = data.me.user;
-    const profile = { id, email, username };
+    const { points, rank } = data.me.marblelympicsParticipated.edges[0].node;
+    const profile = { id, email, username, points, rank };
     const marblelympics =
       data.me.marblelympicsParticipated.edges[0].node.marblelympics;
     const teams = marblelympics.teams.edges;
@@ -103,6 +105,7 @@ class Game extends Component {
             currentEvent={this.state.currentEvent}
             teams={this.state.teams}
           />
+          <InfoDrawer profile={this.state.profile} />
         </div>
       </React.Fragment>
     );
