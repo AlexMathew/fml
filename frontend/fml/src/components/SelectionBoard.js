@@ -6,6 +6,12 @@ import ListItem from "@material-ui/core/ListItem";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Lock from "@material-ui/icons/Lock";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowDropUp from "@material-ui/icons/ArrowDropUp";
+import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
+import Remove from "@material-ui/icons/Remove";
 import Team from "./Team";
 
 const styles = theme => ({
@@ -43,8 +49,29 @@ class SelectionBoard extends React.Component {
           </Typography>
           <div className={classes.demo}>
             <List>
-              {Object.keys(this.props.teams).map(key => (
+              {Object.keys(this.props.teams).map((key, index) => (
                 <ListItem key={this.props.teams[key].id}>
+                  <ListItemAvatar>
+                    <Avatar>{index + 1}</Avatar>
+                  </ListItemAvatar>
+                  {index !== 0 ? (
+                    <IconButton aria-label="move-team-up" onClick={() => {}}>
+                      <ArrowDropUp />
+                    </IconButton>
+                  ) : (
+                    <IconButton aria-label="move-team-none" onClick={() => {}}>
+                      <Remove />
+                    </IconButton>
+                  )}
+                  {index !== Object.keys(this.props.teams).length - 1 ? (
+                    <IconButton aria-label="move-team-up" onClick={() => {}}>
+                      <ArrowDropDown />
+                    </IconButton>
+                  ) : (
+                    <IconButton aria-label="move-team-none" onClick={() => {}}>
+                      <Remove />
+                    </IconButton>
+                  )}
                   <Team team={this.props.teams[key]} />
                 </ListItem>
               ))}
