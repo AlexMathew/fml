@@ -4,8 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Lock from "@material-ui/icons/Lock";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
@@ -36,18 +34,6 @@ class SelectionBoard extends React.Component {
     return (
       <Grid container spacing={16}>
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" className={classes.title}>
-            {this.props.currentEvent
-              ? `Event #${this.props.currentEvent.number} - ${
-                  this.props.currentEvent.name
-                }`
-              : ""}
-            {this.props.currentEvent && this.props.currentEvent.locked ? (
-              <Lock />
-            ) : (
-              ""
-            )}
-          </Typography>
           <div className={classes.demo}>
             <List>
               {Object.keys(this.props.teams).map((key, index) => (

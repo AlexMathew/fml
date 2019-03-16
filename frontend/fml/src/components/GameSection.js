@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Lock from "@material-ui/icons/Lock";
 import SelectionBoard from "./SelectionBoard";
 
 const styles = theme => ({
@@ -17,10 +19,19 @@ class GameSection extends React.Component {
 
     return (
       <main className={classes.content}>
-        <SelectionBoard
-          currentEvent={this.props.currentEvent}
-          teams={this.props.teams}
-        />
+        <Typography variant="h6" className={classes.title}>
+          {this.props.currentEvent
+            ? `Event #${this.props.currentEvent.number} - ${
+                this.props.currentEvent.name
+              }`
+            : ""}
+          {this.props.currentEvent && this.props.currentEvent.locked ? (
+            <Lock />
+          ) : (
+            ""
+          )}
+        </Typography>
+        <SelectionBoard teams={this.props.teams} />
       </main>
     );
   }
