@@ -10,6 +10,7 @@ import Drawer from "@material-ui/core/Drawer";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
+import EventListIcons from "./EventListIcons";
 
 const drawerWidth = 320;
 
@@ -43,7 +44,16 @@ class EventList extends React.Component {
               <ListItemAvatar>
                 <Avatar>{this.props.events[key].number}</Avatar>
               </ListItemAvatar>
-              <ListItemText primary={this.props.events[key].name} />
+              <ListItemText
+                primary={this.props.events[key].name}
+                secondary={
+                  <EventListIcons
+                    event={this.props.events[key]}
+                    enteredEvents={this.props.enteredEvents}
+                  />
+                }
+              />
+
               <ListItemSecondaryAction>
                 <IconButton
                   aria-label="go-to-event"

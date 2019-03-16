@@ -15,14 +15,18 @@ class Game extends Component {
   state = {
     profile: {},
     marblelympics: {},
-    teams: {},
+    teams: [],
     events: {},
-    currentEvent: {}
+    currentEvent: {},
+    eventEntries: {}
   };
 
-  arrayToObject = array =>
+  teamsSorted = false;
+
+  arrayToObject = (array, specificKey) =>
     array.reduce((obj, item) => {
-      obj[item.node.id] = item.node;
+      const keyname = specificKey ? item.node[specificKey].id : item.node.id;
+      obj[keyname] = item.node;
       return obj;
     }, {});
 
@@ -32,16 +36,51 @@ class Game extends Component {
     const profile = { id, email, username };
     const marblelympics =
       data.me.marblelympicsParticipated.edges[0].node.marblelympics;
-    const teams = this.arrayToObject(marblelympics.teams.edges);
+    const teams = marblelympics.teams.edges;
     const events = this.arrayToObject(marblelympics.events.edges);
     delete marblelympics["teams"];
     delete marblelympics["events"];
     const currentEvent = events[Object.keys(events)[0]];
-    this.setState({ profile, marblelympics, teams, events, currentEvent });
+    const eventEntries = this.arrayToObject(
+      data.me.marblelympicsParticipated.edges[0].node.eventEntries.edges,
+      "event"
+    );
+    this.setState({
+      profile,
+      marblelympics,
+      teams,
+      events,
+      currentEvent,
+      eventEntries
+    });
   }
+
+  componentDidUpdate() {
+    this.sortTeamsFromEntries();
+  }
+
+  sortTeamsFromEntries = () => {
+    const entry = this.state.eventEntries[this.state.currentEvent.id];
+    if (!this.teamsSorted && entry) {
+      const selectedTeams = entry.selections.map(
+        selection => selection.team.id
+      );
+      let teams = this.state.teams;
+      teams.map((team, index) => {
+        const foundIndex = selectedTeams.indexOf(team.node.id);
+        if (foundIndex !== -1) {
+          [teams[index], teams[foundIndex]] = [teams[foundIndex], teams[index]];
+        }
+        return teams[index];
+      });
+      this.setState({ teams });
+      this.teamsSorted = true;
+    }
+  };
 
   switchEvent = key => {
     const currentEvent = this.state.events[key];
+    this.teamsSorted = false;
     this.setState({ currentEvent });
   };
 
@@ -57,6 +96,7 @@ class Game extends Component {
         <div className={classes.root}>
           <EventList
             events={this.state.events}
+            enteredEvents={Object.keys(this.state.eventEntries)}
             switchEvent={this.switchEvent}
           />
           <GameSection

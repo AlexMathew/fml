@@ -36,8 +36,8 @@ class SelectionBoard extends React.Component {
         <Grid item xs={12} md={6}>
           <div className={classes.demo}>
             <List>
-              {Object.keys(this.props.teams).map((key, index) => (
-                <ListItem key={this.props.teams[key].id}>
+              {this.props.teams.map((team, index) => (
+                <ListItem key={team.node.id}>
                   <ListItemAvatar>
                     <Avatar className={index < 3 ? classes.winnersAvatar : ""}>
                       {index + 1}
@@ -61,7 +61,7 @@ class SelectionBoard extends React.Component {
                       <Remove />
                     </IconButton>
                   )}
-                  <Team team={this.props.teams[key]} />
+                  <Team team={team.node} />
                 </ListItem>
               ))}
             </List>
