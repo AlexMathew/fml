@@ -17,7 +17,6 @@ class GameSection extends React.Component {
 
     return (
       <main className={classes.content}>
-        <div className={classes.toolbar} />
         <SelectionBoard
           currentEvent={this.props.currentEvent}
           teams={this.props.teams}

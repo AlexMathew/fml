@@ -12,15 +12,16 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowDropUp from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import Remove from "@material-ui/icons/Remove";
+import Red from "@material-ui/core/colors/red";
 import Team from "./Team";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    maxWidth: 752
-  },
   demo: {
     backgroundColor: theme.palette.background.paper
+  },
+  winnersAvatar: {
+    color: "#fff",
+    backgroundColor: Red[500]
   },
   title: {
     margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
@@ -52,7 +53,9 @@ class SelectionBoard extends React.Component {
               {Object.keys(this.props.teams).map((key, index) => (
                 <ListItem key={this.props.teams[key].id}>
                   <ListItemAvatar>
-                    <Avatar>{index + 1}</Avatar>
+                    <Avatar className={index < 3 ? classes.winnersAvatar : ""}>
+                      {index + 1}
+                    </Avatar>
                   </ListItemAvatar>
                   {index !== 0 ? (
                     <IconButton aria-label="move-team-up" onClick={() => {}}>
