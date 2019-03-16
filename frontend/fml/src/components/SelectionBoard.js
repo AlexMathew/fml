@@ -1,53 +1,57 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Lock from "@material-ui/icons/Lock";
+import Team from "./Team";
 
 const styles = theme => ({
-  content: {
+  root: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    maxWidth: 752
   },
-  toolbar: theme.mixins.toolbar
+  demo: {
+    backgroundColor: theme.palette.background.paper
+  },
+  title: {
+    margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
+  }
 });
 
 class SelectionBoard extends React.Component {
+  state = {};
   render() {
     const { classes } = this.props;
 
     return (
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </main>
+      <Grid container spacing={16}>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h6" className={classes.title}>
+            {this.props.currentEvent
+              ? `Event #${this.props.currentEvent.number} - ${
+                  this.props.currentEvent.name
+                }`
+              : ""}
+            {this.props.currentEvent && this.props.currentEvent.locked ? (
+              <Lock />
+            ) : (
+              ""
+            )}
+          </Typography>
+          <div className={classes.demo}>
+            <List>
+              {Object.keys(this.props.teams).map(key => (
+                <ListItem key={this.props.teams[key].id}>
+                  <Team team={this.props.teams[key]} />
+                </ListItem>
+              ))}
+            </List>
+          </div>
+        </Grid>
+      </Grid>
     );
   }
 }

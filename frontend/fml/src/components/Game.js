@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Header from "./Header";
 import EventList from "./EventList";
-import SelectionBoard from "./SelectionBoard";
+import GameSection from "./GameSection";
 
 const styles = () => ({
   root: {
@@ -53,14 +53,16 @@ class Game extends Component {
         <Header
           history={this.props.history}
           year={this.state.marblelympics.year}
-          currentEvent={this.state.currentEvent}
         />
         <div className={classes.root}>
           <EventList
             events={this.state.events}
             switchEvent={this.switchEvent}
           />
-          <SelectionBoard />
+          <GameSection
+            currentEvent={this.state.currentEvent}
+            teams={this.state.teams}
+          />
         </div>
       </React.Fragment>
     );
