@@ -4,6 +4,7 @@ import redis
 class Redis(object):
     """
     """
+
     def __init__(self, host, port):
         """
         """

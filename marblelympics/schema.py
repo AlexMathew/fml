@@ -20,6 +20,8 @@ class TeamNode(DjangoObjectType):
 
 
 class MLNode(DjangoObjectType):
+    player_count = graphene.Int()
+
     class Meta:
         model = Marblelympics
         interfaces = (graphene.relay.Node,)
@@ -27,14 +29,22 @@ class MLNode(DjangoObjectType):
             'active': ['exact'],
         }
 
+    def resolve_player_count(self, info, **kwargs):
+        return self.player_count
+
 
 class EventNode(DjangoObjectType):
+    entry_count = graphene.Int()
+
     class Meta:
         model = Event
         interfaces = (graphene.relay.Node,)
         filter_fields = {
             'ml__active': ['exact'],
         }
+
+    def resolve_entry_count(self, info, **kwargs):
+        return self.entry_count
 
 
 class FantasyPlayerNode(DjangoObjectType):

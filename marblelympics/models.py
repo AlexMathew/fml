@@ -1,4 +1,5 @@
 import json
+from hashlib import md5
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -6,6 +7,8 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
+from helpers import constants
+from helpers.instances import redis
 from players.models import Player
 
 
@@ -27,7 +30,6 @@ class Marblelympics(models.Model):
     )
     team_count = models.IntegerField(default=0)
     teams = models.ManyToManyField(Team, related_name='ml_participated')
-    total_players = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'Marblelympics'
@@ -39,6 +41,22 @@ class Marblelympics(models.Model):
 
     def __str__(self):
         return f"ML{self.year}{' (ACTIVE)' if self.active else ''}"
+
+    @property
+    def cache_key(self):
+        return md5(f'ML{self.year}'.encode('utf-8')).hexdigest()
+
+    @property
+    def player_count(self):
+        count = redis.get(self.cache_key)
+        if not count:
+            count = self.players_participating.count()
+            redis.set(
+                self.cache_key, count,
+                ex=constants.PLAYER_COUNT_CACHE_DURATION
+            )
+
+        return count
 
 
 class Event(models.Model):
@@ -60,6 +78,22 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.ml} #{self.number} - {self.name}{' (LOCKED)' if self.locked else ''}"
+
+    @property
+    def cache_key(self):
+        return md5(f'{self.ml} #{self.number} - {self.name}'.encode('utf-8')).hexdigest()
+
+    @property
+    def entry_count(self):
+        count = redis.get(self.cache_key)
+        if not count:
+            count = self.player_entries.count()
+            redis.set(
+                self.cache_key, count,
+                ex=constants.EVENT_ENTRY_COUNT_CACHE_DURATION
+            )
+
+        return count
 
 
 class FantasyPlayer(models.Model):
