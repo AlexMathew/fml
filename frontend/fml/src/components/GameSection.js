@@ -10,6 +10,9 @@ const styles = theme => ({
     flexGrow: 1,
     padding: theme.spacing.unit * 3
   },
+  title: {
+    margin: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 2}px`
+  },
   toolbar: theme.mixins.toolbar
 });
 
@@ -19,7 +22,7 @@ class GameSection extends React.Component {
 
     return (
       <main className={classes.content}>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h5" className={classes.title}>
           {this.props.currentEvent
             ? `Event #${this.props.currentEvent.number} - ${
                 this.props.currentEvent.name
