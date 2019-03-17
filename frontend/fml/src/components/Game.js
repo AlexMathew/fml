@@ -105,7 +105,11 @@ class Game extends Component {
             currentEvent={this.state.currentEvent}
             teams={this.state.teams}
           />
-          <InfoDrawer profile={this.state.profile} />
+          <InfoDrawer
+            profile={this.state.profile}
+            marblelympics={this.state.marblelympics}
+            currentEvent={this.state.currentEvent}
+          />
         </div>
       </React.Fragment>
     );

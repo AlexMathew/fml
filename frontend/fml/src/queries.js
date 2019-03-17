@@ -19,6 +19,7 @@ export const ME_QUERY = gql`
             marblelympics {
               id
               year
+              playerCount
               host {
                 id
                 name
@@ -40,6 +41,7 @@ export const ME_QUERY = gql`
                     }
                     number
                     name
+                    entryCount
                     locked
                   }
                 }

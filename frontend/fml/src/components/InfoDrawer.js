@@ -54,7 +54,13 @@ class InfoDrawer extends React.Component {
             </Typography>
             <Typography>
               <b>Overall rank: </b>
-              {this.props.profile.rank === -1 ? "0" : this.props.profile.rank}
+              {this.props.profile.rank === -1
+                ? this.props.marblelympics.playerCount
+                : this.props.profile.rank}
+            </Typography>
+            <Typography>
+              <b>Total player: </b>
+              {this.props.marblelympics.playerCount}
             </Typography>
           </CardContent>
         </Card>
