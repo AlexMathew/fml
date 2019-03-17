@@ -109,6 +109,9 @@ class Game extends Component {
             profile={this.state.profile}
             marblelympics={this.state.marblelympics}
             currentEvent={this.state.currentEvent}
+            currentEventEntry={
+              this.state.eventEntries[this.state.currentEvent.id]
+            }
           />
         </div>
       </React.Fragment>

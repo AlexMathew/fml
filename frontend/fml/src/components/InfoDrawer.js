@@ -41,7 +41,7 @@ class InfoDrawer extends React.Component {
         <div className={classes.toolbar} />
         <Card className={classes.card}>
           <CardContent>
-            <Typography variant="h5" component="h2" align="center">
+            <Typography variant="h4" component="h2" align="center">
               {this.props.profile.username}
             </Typography>
           </CardContent>
@@ -49,18 +49,48 @@ class InfoDrawer extends React.Component {
         <Card className={classes.card}>
           <CardContent>
             <Typography>
-              <b>Overall points: </b>
+              <strong>Overall points: </strong>
               {this.props.profile.points}
             </Typography>
             <Typography>
-              <b>Overall rank: </b>
-              {this.props.profile.rank === -1
-                ? this.props.marblelympics.playerCount
-                : this.props.profile.rank}
+              <strong>Overall rank: </strong>
+              {this.props.profile.rank !== -1
+                ? this.props.profile.rank
+                : this.props.marblelympics.playerCount}
             </Typography>
             <Typography>
-              <b>Total player: </b>
+              <strong>Total players: </strong>
               {this.props.marblelympics.playerCount}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography variant="h5" component="h5" align="center">
+              EVENT DETAILS
+            </Typography>
+            <Typography variant="h6" component="h6" align="center">
+              {`#${this.props.currentEvent.number}`}
+            </Typography>
+            <Typography variant="h6" component="h6" align="center">
+              {`${this.props.currentEvent.name}`}
+            </Typography>
+            <Typography>
+              <strong>Event points: </strong>
+              {this.props.currentEventEntry
+                ? this.props.currentEventEntry.points
+                : "0"}
+            </Typography>
+            <Typography>
+              <strong>Event rank: </strong>
+              {this.props.currentEventEntry &&
+              this.props.currentEventEntry.rank !== -1
+                ? this.props.currentEventEntry.rank
+                : this.props.currentEvent.entryCount}
+            </Typography>
+            <Typography>
+              <strong>Total entries for event: </strong>
+              {this.props.currentEvent.entryCount}
             </Typography>
           </CardContent>
         </Card>
