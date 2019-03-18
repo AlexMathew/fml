@@ -122,7 +122,7 @@ query {
                   }
                   number
                   name
-                  locked
+                  status
                 }
               }
             }

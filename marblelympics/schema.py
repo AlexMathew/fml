@@ -34,6 +34,7 @@ class MLNode(DjangoObjectType):
 
 
 class EventNode(DjangoObjectType):
+    status = graphene.Int()
     entry_count = graphene.Int()
 
     class Meta:

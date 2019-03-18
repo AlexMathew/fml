@@ -8,6 +8,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from helpers import constants
+from helpers.utils import enum_to_choices
 from helpers.instances import redis
 from players.models import Player
 
@@ -65,7 +66,9 @@ class Event(models.Model):
     )
     number = models.IntegerField(null=False, blank=False)
     name = models.CharField(max_length=256, null=False, blank=False)
-    locked = models.BooleanField(default=False)
+    status = models.IntegerField(
+        choices=enum_to_choices(constants.EventStatus), default=1
+    )
 
     class Meta:
         verbose_name = 'Marblelympics Event'
@@ -74,10 +77,10 @@ class Event(models.Model):
         ordering = ['ml', 'number']
 
     def __repr__(self):
-        return f"{self.ml} #{self.number} - {self.name}{' (LOCKED)' if self.locked else ''}"
+        return f"{self.ml} #{self.number} - {self.name}{' (LOCKED)' if self.status == 4 else ''}"
 
     def __str__(self):
-        return f"{self.ml} #{self.number} - {self.name}{' (LOCKED)' if self.locked else ''}"
+        return f"{self.ml} #{self.number} - {self.name}{' (LOCKED)' if self.status == 4 else ''}"
 
     @property
     def cache_key(self):
