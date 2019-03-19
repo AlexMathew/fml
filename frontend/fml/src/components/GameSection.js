@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Lock from "@material-ui/icons/Lock";
-import SelectionBoard from "./SelectionBoard";
+import DraggableSelection from "./DraggableSelection";
 
 const styles = theme => ({
   content: {
@@ -34,7 +34,10 @@ class GameSection extends React.Component {
             ""
           )}
         </Typography>
-        <SelectionBoard teams={this.props.teams} />
+        <DraggableSelection
+          teams={this.props.teams}
+          onDragEnd={this.props.onDragEnd}
+        />
       </main>
     );
   }

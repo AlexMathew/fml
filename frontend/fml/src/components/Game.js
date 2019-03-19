@@ -86,6 +86,30 @@ class Game extends Component {
     this.setState({ currentEvent });
   };
 
+  reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  onDragEnd = result => {
+    if (!result.destination) {
+      return;
+    }
+
+    const teams = this.reorder(
+      this.state.teams,
+      result.source.index,
+      result.destination.index
+    );
+
+    this.setState({
+      teams
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -104,6 +128,7 @@ class Game extends Component {
           <GameSection
             currentEvent={this.state.currentEvent}
             teams={this.state.teams}
+            onDragEnd={this.onDragEnd}
           />
           <InfoDrawer
             profile={this.state.profile}
