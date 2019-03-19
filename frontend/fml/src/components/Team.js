@@ -1,16 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import ListItemText from "@material-ui/core/ListItemText";
 import Red from "@material-ui/core/colors/red";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
 
 const styles = {
   winnersAvatar: {
     color: "#fff",
     backgroundColor: Red[500]
+  },
+  card: {
+    display: "flex"
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  content: {
+    flex: "1 0 auto"
+  },
+  cover: {
+    width: 151
   }
 };
 
@@ -19,14 +33,23 @@ class Team extends React.Component {
     const { classes } = this.props;
 
     return (
-      <ListItem key={this.props.team.id}>
-        <ListItemAvatar>
-          <Avatar className={this.props.index < 3 ? classes.winnersAvatar : ""}>
-            {this.props.index + 1}
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={this.props.team.name} />
-      </ListItem>
+      <Card className={classes.card}>
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography component="h5" variant="h5">
+              {this.props.team.name}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              <Avatar
+                className={this.props.index < 3 ? classes.winnersAvatar : ""}
+              >
+                {this.props.index + 1}
+              </Avatar>
+            </Typography>
+          </CardContent>
+        </div>
+        <CardMedia className={classes.cover} image="" title="" />
+      </Card>
     );
   }
 }
