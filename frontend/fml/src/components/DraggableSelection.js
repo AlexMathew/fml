@@ -4,12 +4,12 @@ import Team from "./Team";
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = draggableStyle => ({
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
 
-  background: "grey",
+  background: "white",
 
   ...draggableStyle
 });
@@ -42,12 +42,9 @@ class DraggableSelection extends React.Component {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
+                      style={getItemStyle(provided.draggableProps.style)}
                     >
-                      <Team team={team.node} />
+                      <Team index={index} team={team.node} />
                     </div>
                   )}
                 </Draggable>
