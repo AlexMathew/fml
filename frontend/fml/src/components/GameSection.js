@@ -28,7 +28,7 @@ class GameSection extends React.Component {
                 this.props.currentEvent.name
               }`
             : ""}
-          {this.props.currentEvent && this.props.currentEvent.locked ? (
+          {this.props.currentEvent && this.props.currentEvent.status === 4 ? (
             <Lock />
           ) : (
             ""

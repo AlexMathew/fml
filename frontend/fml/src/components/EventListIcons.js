@@ -11,7 +11,7 @@ class EventListIcons extends React.Component {
         ) : (
           ""
         )}
-        {this.props.event.locked ? <Lock /> : ""}
+        {this.props.event.status === 4 ? <Lock /> : ""}
       </React.Fragment>
     );
   }

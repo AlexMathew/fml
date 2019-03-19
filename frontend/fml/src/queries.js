@@ -42,7 +42,7 @@ export const ME_QUERY = gql`
                     number
                     name
                     entryCount
-                    locked
+                    status
                   }
                 }
               }
