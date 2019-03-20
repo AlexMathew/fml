@@ -1,5 +1,7 @@
 import json
+import os
 from hashlib import md5
+from urllib.request import urlretrieve
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -8,19 +10,25 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from helpers import constants
+from helpers.instances import redis, s3
 from helpers.utils import enum_to_choices
-from helpers.instances import redis
 from players.models import Player
 
 
 class Team(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    image = models.CharField(max_length=500, blank=True)
+    cdn_image = models.CharField(max_length=500, blank=True, null=True)
 
     def __repr__(self):
         return self.name
 
     def __str__(self):
         return self.name
+
+    @property
+    def cdn_image_url(self):
+        return md5(f"fml{'prod' if os.getenv('IS_SERVER') == 'true' else 'dev'}_{self.image or ''}".encode('utf-8')).hexdigest()
 
 
 class Marblelympics(models.Model):
@@ -181,6 +189,24 @@ def check_number_of_teams(sender, instance, **kwargs):
         raise ValidationError(
             f"ML{instance.year} can only have {instance.team_count} teams"
         )
+
+
+@receiver(pre_save, sender=Team)
+def update_cdn_image(sender, instance, **kwargs):
+    """
+    """
+    original = Team.objects.filter(id=instance.id).first()
+    if (original.image if original else None) != instance.image:
+        image_format = instance.image.split('.')[-1] if '.' in instance.image else 'jpg'
+        image_location = f'/tmp/{instance.cdn_image_url}.{image_format}'
+        urlretrieve(instance.image, image_location)
+        s3.upload_file(
+            bucket_name=os.getenv('TEAM_LOGO_BUCKET_NAME'),
+            destination=f'{instance.cdn_image_url}.{image_format}',
+            source_file=image_location,
+            content_type=f"image/{'jpeg' if image_format == 'jpg' else image_format}",
+        )
+        instance.cdn_image = f"http://{os.getenv('CLOUDFRONT_URL')}/{instance.cdn_image_url}.{image_format}"
 
 
 @receiver(pre_save, sender=PlayerEntry)

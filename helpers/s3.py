@@ -6,6 +6,7 @@ import boto3
 class S3(object):
     """
     """
+
     def __init__(
         self,
         aws_region='',
@@ -14,7 +15,8 @@ class S3(object):
     ):
         """
         """
-        self.s3 = boto3.client('s3',
+        self.s3 = boto3.client(
+            's3',
             region_name=aws_region,
             aws_access_key_id=aws_access_key,
             aws_secret_access_key=aws_secret_key
