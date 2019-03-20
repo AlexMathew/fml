@@ -14,17 +14,13 @@ const styles = {
     backgroundColor: Red[500]
   },
   card: {
-    display: "flex"
+    maxWidth: 400,
+    maxHeight: 250,
+    textAlign: "center",
+    align: "center"
   },
-  details: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  content: {
-    flex: "1 0 auto"
-  },
-  cover: {
-    width: 151
+  media: {
+    height: 150
   }
 };
 
@@ -34,25 +30,23 @@ class Team extends React.Component {
 
     return (
       <Card className={classes.card}>
-        <div className={classes.details}>
-          <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
-              {this.props.index < 3 ? (
-                <Avatar className={classes.winnersAvatar}>
-                  {this.props.index + 1}
-                </Avatar>
-              ) : (
-                ""
-              )}
-              {this.props.team.name}
-            </Typography>
-          </CardContent>
-        </div>
         <CardMedia
-          className={classes.cover}
+          className={classes.media}
           image={this.props.team.cdnImage}
-          title=""
+          title={this.props.team.name}
         />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {this.props.index < 3 ? (
+              <Avatar className={classes.winnersAvatar}>
+                {this.props.index + 1}
+              </Avatar>
+            ) : (
+              <Avatar />
+            )}
+            {this.props.team.name}
+          </Typography>
+        </CardContent>
       </Card>
     );
   }

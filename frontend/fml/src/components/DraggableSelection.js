@@ -17,7 +17,7 @@ const getItemStyle = draggableStyle => ({
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
   padding: grid,
-  width: 450
+  width: 400
 });
 
 class DraggableSelection extends React.Component {
