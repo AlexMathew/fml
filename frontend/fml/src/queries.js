@@ -29,6 +29,7 @@ export const ME_QUERY = gql`
                   node {
                     id
                     name
+                    cdnImage
                   }
                 }
               }

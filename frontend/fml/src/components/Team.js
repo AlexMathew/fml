@@ -48,7 +48,11 @@ class Team extends React.Component {
             </Typography>
           </CardContent>
         </div>
-        <CardMedia className={classes.cover} image="" title="" />
+        <CardMedia
+          className={classes.cover}
+          image={this.props.team.cdnImage}
+          title=""
+        />
       </Card>
     );
   }
