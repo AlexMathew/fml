@@ -37,14 +37,14 @@ class Team extends React.Component {
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography component="h5" variant="h5">
+              {this.props.index < 3 ? (
+                <Avatar className={classes.winnersAvatar}>
+                  {this.props.index + 1}
+                </Avatar>
+              ) : (
+                ""
+              )}
               {this.props.team.name}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              <Avatar
-                className={this.props.index < 3 ? classes.winnersAvatar : ""}
-              >
-                {this.props.index + 1}
-              </Avatar>
             </Typography>
           </CardContent>
         </div>
