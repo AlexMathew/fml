@@ -13,6 +13,7 @@ class TeamNode(DjangoObjectType):
     class Meta:
         model = Team
         interfaces = (graphene.relay.Node,)
+        exclude_fields = ('image')
         filter_fields = {
             'name': ['exact', 'icontains', 'istartswith'],
             'ml_participated': ['exact'],
