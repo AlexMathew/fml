@@ -9,3 +9,9 @@ class EventStatus(Enum):
     POINTS_UPDATING = 2
     RANK_UPDATING = 3
     LOCKED = 4
+
+
+class EventScoringStatus(Enum):
+    OPEN = 1
+    ONGOING = 2
+    COMPLETED = 3

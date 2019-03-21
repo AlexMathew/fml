@@ -77,6 +77,9 @@ class Event(models.Model):
     status = models.IntegerField(
         choices=enum_to_choices(constants.EventStatus), default=1
     )
+    scoring_status = models.IntegerField(
+        choices=enum_to_choices(constants.EventScoringStatus), default=1
+    )
 
     class Meta:
         verbose_name = 'Marblelympics Event'
