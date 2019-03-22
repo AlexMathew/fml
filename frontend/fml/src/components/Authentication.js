@@ -13,11 +13,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Mutation } from "react-apollo";
 import { AUTH_TOKEN_FIELD } from "../constants";
 import { LOGIN_QUERY } from "../queries";
+import { red } from "@material-ui/core/colors";
 
 const styles = theme => ({
   main: {
     width: "auto",
-    display: "block", // Fix IE 11 issue.
+    display: "block",
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -39,18 +40,22 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing.unit
   },
   submit: {
     marginTop: theme.spacing.unit * 3
+  },
+  error: {
+    color: red[500]
   }
 });
 
 class Authentication extends React.Component {
   state = {
     username: "",
-    password: ""
+    password: "",
+    error: false
   };
 
   componentDidMount() {
@@ -69,7 +74,7 @@ class Authentication extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { username, password } = this.state;
+    const { username, password, error } = this.state;
 
     return (
       <main className={classes.main}>
@@ -81,6 +86,13 @@ class Authentication extends React.Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {error ? (
+            <Typography component="h4" variant="h6" className={classes.error}>
+              Invalid credentials
+            </Typography>
+          ) : (
+            ""
+          )}
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="email">Username</InputLabel>
             <Input
@@ -107,6 +119,7 @@ class Authentication extends React.Component {
             mutation={LOGIN_QUERY}
             variables={{ username, password }}
             onCompleted={data => this._confirm(data)}
+            onError={() => this.setState({ error: true })}
           >
             {mutation => (
               <Button
