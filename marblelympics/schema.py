@@ -4,6 +4,8 @@ import graphene
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
+from helpers.constants import EventStatus
+from helpers.utils import enum_to_dict
 from services.authentication import GraphqlAuthentication
 
 from .models import Event, FantasyPlayer, Marblelympics, PlayerEntry, Team
@@ -120,7 +122,7 @@ class UpsertPlayerEntry(graphene.relay.ClientIDMutation):
         ).first()
         if not event:
             raise Exception(f"No event #{input.get('event_number')} in {ml}")
-        if event.locked:
+        if enum_to_dict(EventStatus).get(event.status, 1) == 'LOCKED':
             raise Exception(f"Event is locked")
 
         fplayer = FantasyPlayer.objects.filter(

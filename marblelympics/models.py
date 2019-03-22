@@ -11,7 +11,7 @@ from django.dispatch import receiver
 
 from helpers import constants
 from helpers.instances import redis, s3
-from helpers.utils import enum_to_choices
+from helpers.utils import enum_to_choices, enum_to_dict
 from players.models import Player
 
 
@@ -218,7 +218,7 @@ def validate_selections(sender, instance, **kwargs):
     """
     original = PlayerEntry.objects.filter(id=instance.id).first()
     if (original.selections if original else None) != instance.selections:
-        if instance.event.locked:
+        if enum_to_dict(constants.EventStatus).get(instance.event.status, 1) == 'LOCKED':
             raise Exception("Event is locked")
 
         selections = json.loads(instance.selections)
