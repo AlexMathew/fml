@@ -10,7 +10,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { Mutation } from "react-apollo";
 import { AUTH_TOKEN_FIELD } from "../constants";
+import { LOGIN_QUERY } from "../queries";
 
 const styles = theme => ({
   main: {
@@ -46,6 +48,11 @@ const styles = theme => ({
 });
 
 class Authentication extends React.Component {
+  state = {
+    username: "",
+    password: ""
+  };
+
   componentDidMount() {
     const auth_token = localStorage.getItem(AUTH_TOKEN_FIELD);
     if (auth_token) {
@@ -53,8 +60,16 @@ class Authentication extends React.Component {
     }
   }
 
+  _confirm = data => {
+    const token = data.tokenAuth.token;
+    localStorage.setItem(AUTH_TOKEN_FIELD, token);
+    // eslint-disable-next-line no-restricted-globals
+    location.reload(true);
+  };
+
   render() {
     const { classes } = this.props;
+    const { username, password } = this.state;
 
     return (
       <main className={classes.main}>
@@ -66,30 +81,46 @@ class Authentication extends React.Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign in
-            </Button>
-          </form>
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="email">Username</InputLabel>
+            <Input
+              id="username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              value={username}
+              onChange={e => this.setState({ username: e.target.value })}
+            />
+          </FormControl>
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <Input
+              name="password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={e => this.setState({ password: e.target.value })}
+            />
+          </FormControl>
+          <Mutation
+            mutation={LOGIN_QUERY}
+            variables={{ username, password }}
+            onCompleted={data => this._confirm(data)}
+          >
+            {mutation => (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={mutation}
+              >
+                Sign in
+              </Button>
+            )}
+          </Mutation>
         </Paper>
       </main>
     );
