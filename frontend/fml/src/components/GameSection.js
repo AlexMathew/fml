@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Lock from "@material-ui/icons/Lock";
+import Button from "@material-ui/core/Button";
+import SaveIcon from "@material-ui/icons/Save";
 import DraggableSelection from "./DraggableSelection";
 
 const styles = theme => ({
@@ -13,7 +15,13 @@ const styles = theme => ({
   title: {
     margin: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 2}px`
   },
-  toolbar: theme.mixins.toolbar
+  toolbar: theme.mixins.toolbar,
+  button: {
+    margin: theme.spacing.unit
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit
+  }
 });
 
 class GameSection extends React.Component {
@@ -29,11 +37,23 @@ class GameSection extends React.Component {
               }`
             : ""}
           {this.props.currentEvent && this.props.currentEvent.status === 4 ? (
-            <Lock />
+            <Lock
+              style={{ fontSize: 20, verticalAlign: "center", paddingLeft: 5 }}
+            />
           ) : (
             ""
           )}
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={!this.props.saveActivated}
+          className={classes.button}
+          size="large"
+        >
+          Save
+          <SaveIcon className={classes.rightIcon} />
+        </Button>
         <DraggableSelection
           teams={this.props.teams}
           onDragEnd={this.props.onDragEnd}
