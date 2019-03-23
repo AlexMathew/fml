@@ -40,8 +40,10 @@ class GameSection extends React.Component {
         <SaveAction
           saveActivated={this.props.saveActivated}
           teams={this.props.teams}
-          eventNumber={this.props.currentEvent.number}
+          currentEvent={this.props.currentEvent}
           saveEntry={this.props.saveEntry}
+          saveError={this.props.saveError}
+          setSaveError={this.props.setSaveError}
         />
         <DraggableSelection
           teams={this.props.teams}

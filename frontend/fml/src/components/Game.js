@@ -20,7 +20,8 @@ class Game extends Component {
     events: {},
     currentEvent: {},
     eventEntries: {},
-    saveActivated: false
+    saveActivated: false,
+    saveError: ""
   };
 
   teamsSorted = false;
@@ -84,7 +85,7 @@ class Game extends Component {
   switchEvent = key => {
     const currentEvent = this.state.events[key];
     this.teamsSorted = false;
-    this.setState({ currentEvent, saveActivated: false });
+    this.setState({ currentEvent, saveActivated: false, saveError: "" });
   };
 
   reorder = (list, startIndex, endIndex) => {
@@ -121,6 +122,14 @@ class Game extends Component {
     });
   };
 
+  setSaveError = error => {
+    const saveError = error.message
+      .split(": ")
+      .slice(1)
+      .join("");
+    this.setState({ saveError });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -142,6 +151,8 @@ class Game extends Component {
             onDragEnd={this.onDragEnd}
             saveActivated={this.state.saveActivated}
             saveEntry={this.saveEntry}
+            saveError={this.state.saveError}
+            setSaveError={this.setSaveError}
           />
           <InfoDrawer
             profile={this.state.profile}
