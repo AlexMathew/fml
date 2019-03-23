@@ -118,7 +118,8 @@ class Game extends Component {
     eventEntries[eventId] = entry;
     this.setState({
       eventEntries,
-      saveActivated: false
+      saveActivated: false,
+      saveError: ""
     });
   };
 

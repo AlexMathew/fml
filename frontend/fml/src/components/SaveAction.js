@@ -26,7 +26,6 @@ class SaveAction extends React.Component {
   _confirm = data => {
     const entry = data.upsertPlayerEntry.entry;
     const eventId = entry.event.id;
-    this.props.setSaveError("");
     this.props.saveEntry(eventId, entry);
   };
 
