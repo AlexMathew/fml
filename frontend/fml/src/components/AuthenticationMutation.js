@@ -21,8 +21,9 @@ class AuthenticationMutation extends React.Component {
   };
 
   signup = data => {
-    // eslint-disable-next-line no-restricted-globals
-    location.reload(true);
+    const username = data.createPlayer.player.user.username;
+    this.props.setMessage(`User ${username} created`);
+    this.props.switchToLogin();
   };
 
   _confirm = data => {

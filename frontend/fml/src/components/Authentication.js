@@ -54,6 +54,7 @@ class Authentication extends React.Component {
     login: 0,
     username: "",
     password: "",
+    message: "",
     error: false
   };
 
@@ -68,13 +69,21 @@ class Authentication extends React.Component {
     this.setState({ login: value, username: "", password: "", error: false });
   };
 
+  setMessage = message => {
+    this.setState({ message });
+  };
+
+  switchToLogin = () => {
+    this.handleTabChange(0, 0);
+  };
+
   onError = () => {
     this.setState({ error: true });
   };
 
   render() {
     const { classes } = this.props;
-    const { login, username, password, error } = this.state;
+    const { login, username, password, message, error } = this.state;
 
     return (
       <main className={classes.main}>
@@ -105,6 +114,9 @@ class Authentication extends React.Component {
           </Avatar>
           <Typography component="h1" variant="h5">
             {login === 0 ? "Log in" : "Sign up"}
+          </Typography>
+          <Typography component="h4" variant="h6" className={classes.error}>
+            {message || ""}
           </Typography>
           {error ? (
             <Typography component="h4" variant="h6" className={classes.error}>
@@ -140,6 +152,8 @@ class Authentication extends React.Component {
             password={password}
             login={login}
             onError={this.onError}
+            switchToLogin={this.switchToLogin}
+            setMessage={this.setMessage}
           />
         </Paper>
       </main>
