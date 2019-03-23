@@ -8,6 +8,21 @@ export const LOGIN_QUERY = gql`
   }
 `;
 
+export const SIGNUP_QUERY = gql`
+  mutation SignupMutation($username: String!, $password: String!) {
+    createPlayer(input: { username: $username, password: $password }) {
+      player {
+        id
+        createdAt
+        user {
+          id
+          username
+        }
+      }
+    }
+  }
+`;
+
 export const ME_QUERY = gql`
   query {
     me {

@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
@@ -13,10 +12,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Mutation } from "react-apollo";
 import { AUTH_TOKEN_FIELD } from "../constants";
-import { LOGIN_QUERY } from "../queries";
 import { red } from "@material-ui/core/colors";
+import AuthenticationMutation from "./AuthenticationMutation";
 
 const styles = theme => ({
   main: {
@@ -46,9 +44,6 @@ const styles = theme => ({
     width: "100%",
     marginTop: theme.spacing.unit
   },
-  submit: {
-    marginTop: theme.spacing.unit * 3
-  },
   error: {
     color: red[500]
   }
@@ -73,11 +68,8 @@ class Authentication extends React.Component {
     this.setState({ login: value, username: "", password: "", error: false });
   };
 
-  _confirm = data => {
-    const token = data.tokenAuth.token;
-    localStorage.setItem(AUTH_TOKEN_FIELD, token);
-    // eslint-disable-next-line no-restricted-globals
-    location.reload(true);
+  onError = () => {
+    this.setState({ error: true });
   };
 
   render() {
@@ -116,7 +108,7 @@ class Authentication extends React.Component {
           </Typography>
           {error ? (
             <Typography component="h4" variant="h6" className={classes.error}>
-              {login === 0 ? "Invalid credentials" : "Invalid details"}
+              {login === 0 ? "Invalid credentials" : "Username already in use"}
             </Typography>
           ) : (
             ""
@@ -143,25 +135,12 @@ class Authentication extends React.Component {
               onChange={e => this.setState({ password: e.target.value })}
             />
           </FormControl>
-          <Mutation
-            mutation={LOGIN_QUERY}
-            variables={{ username, password }}
-            onCompleted={data => this._confirm(data)}
-            onError={() => this.setState({ error: true })}
-          >
-            {mutation => (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={mutation}
-              >
-                {login === 0 ? "Log in" : "Sign up"}
-              </Button>
-            )}
-          </Mutation>
+          <AuthenticationMutation
+            username={username}
+            password={password}
+            login={login}
+            onError={this.onError}
+          />
         </Paper>
       </main>
     );
