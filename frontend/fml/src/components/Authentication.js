@@ -8,6 +8,9 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Mutation } from "react-apollo";
@@ -53,6 +56,7 @@ const styles = theme => ({
 
 class Authentication extends React.Component {
   state = {
+    login: 0,
     username: "",
     password: "",
     error: false
@@ -65,6 +69,10 @@ class Authentication extends React.Component {
     }
   }
 
+  handleTabChange = (event, value) => {
+    this.setState({ login: value, username: "", password: "", error: false });
+  };
+
   _confirm = data => {
     const token = data.tokenAuth.token;
     localStorage.setItem(AUTH_TOKEN_FIELD, token);
@@ -74,21 +82,41 @@ class Authentication extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { username, password, error } = this.state;
+    const { login, username, password, error } = this.state;
 
     return (
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>
+          <AppBar position="static" style={{ marginBottom: 20 }}>
+            <Tabs
+              variant="fullWidth"
+              value={login}
+              onChange={this.handleTabChange}
+            >
+              <Tab
+                component="a"
+                onClick={event => event.preventDefault()}
+                label="Log In"
+                href="login"
+              />
+              <Tab
+                component="a"
+                onClick={event => event.preventDefault()}
+                label="Sign Up"
+                href="signup"
+              />
+            </Tabs>
+          </AppBar>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {login === 0 ? "Log in" : "Sign up"}
           </Typography>
           {error ? (
             <Typography component="h4" variant="h6" className={classes.error}>
-              Invalid credentials
+              {login === 0 ? "Invalid credentials" : "Invalid details"}
             </Typography>
           ) : (
             ""
@@ -130,7 +158,7 @@ class Authentication extends React.Component {
                 className={classes.submit}
                 onClick={mutation}
               >
-                Sign in
+                {login === 0 ? "Log in" : "Sign up"}
               </Button>
             )}
           </Mutation>
