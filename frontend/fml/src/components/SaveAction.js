@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
+import { Mutation } from "react-apollo";
+import { EVENT_ENTRY_MUTATION } from "../queries";
 
 const styles = theme => ({
   button: {
@@ -16,20 +18,37 @@ const styles = theme => ({
 });
 
 class SaveAction extends React.Component {
+  _confirm = data => {
+    const entry = data.upsertPlayerEntry.entry;
+    const eventId = entry.event.id;
+    this.props.saveEntry(eventId, entry);
+  };
+
   render() {
     const { classes } = this.props;
+    const { teams, eventNumber } = this.props;
+    const [team1, team2, team3] = teams.slice(0, 3).map(team => team.node.name);
 
     return (
-      <Button
-        variant="contained"
-        color="primary"
-        disabled={!this.props.saveActivated}
-        className={classes.button}
-        size="large"
+      <Mutation
+        mutation={EVENT_ENTRY_MUTATION}
+        variables={{ eventNumber, team1, team2, team3 }}
+        onCompleted={data => this._confirm(data)}
       >
-        Save
-        <SaveIcon className={classes.rightIcon} />
-      </Button>
+        {mutation => (
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!this.props.saveActivated}
+            className={classes.button}
+            size="large"
+            onClick={mutation}
+          >
+            Save
+            <SaveIcon className={classes.rightIcon} />
+          </Button>
+        )}
+      </Mutation>
     );
   }
 }

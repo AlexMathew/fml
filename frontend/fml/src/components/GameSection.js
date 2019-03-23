@@ -37,7 +37,12 @@ class GameSection extends React.Component {
             ""
           )}
         </Typography>
-        <SaveAction saveActivated={this.props.saveActivated} />
+        <SaveAction
+          saveActivated={this.props.saveActivated}
+          teams={this.props.teams}
+          eventNumber={this.props.currentEvent.number}
+          saveEntry={this.props.saveEntry}
+        />
         <DraggableSelection
           teams={this.props.teams}
           onDragEnd={this.props.onDragEnd}

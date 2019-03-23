@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import { Mutation } from "react-apollo";
-import { LOGIN_QUERY, SIGNUP_QUERY } from "../queries";
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../queries";
 import { AUTH_TOKEN_FIELD } from "../constants";
 
 const styles = theme => ({
@@ -36,7 +36,7 @@ class AuthenticationMutation extends React.Component {
 
     return (
       <Mutation
-        mutation={this.props.login === 0 ? LOGIN_QUERY : SIGNUP_QUERY}
+        mutation={this.props.login === 0 ? LOGIN_MUTATION : SIGNUP_MUTATION}
         variables={{ username, password }}
         onCompleted={data => this._confirm(data)}
         onError={() => this.props.onError()}

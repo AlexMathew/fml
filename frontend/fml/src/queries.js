@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const LOGIN_QUERY = gql`
+export const LOGIN_MUTATION = gql`
   mutation LoginMutation($username: String!, $password: String!) {
     tokenAuth(username: $username, password: $password) {
       token
@@ -8,7 +8,7 @@ export const LOGIN_QUERY = gql`
   }
 `;
 
-export const SIGNUP_QUERY = gql`
+export const SIGNUP_MUTATION = gql`
   mutation SignupMutation($username: String!, $password: String!) {
     createPlayer(input: { username: $username, password: $password }) {
       player {
@@ -17,6 +17,48 @@ export const SIGNUP_QUERY = gql`
         user {
           id
           username
+        }
+      }
+    }
+  }
+`;
+
+export const EVENT_ENTRY_MUTATION = gql`
+  mutation EventEntryMutation(
+    $eventNumber: Int!
+    $team1: String!
+    $team2: String!
+    $team3: String!
+  ) {
+    upsertPlayerEntry(
+      input: {
+        eventNumber: $eventNumber
+        team1: $team1
+        team2: $team2
+        team3: $team3
+      }
+    ) {
+      entry {
+        id
+        player {
+          id
+        }
+        event {
+          id
+          ml {
+            year
+          }
+          number
+          name
+        }
+        points
+        rank
+        selections {
+          position
+          team {
+            id
+            name
+          }
         }
       }
     }

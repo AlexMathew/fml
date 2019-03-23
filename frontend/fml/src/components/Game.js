@@ -112,6 +112,15 @@ class Game extends Component {
     });
   };
 
+  saveEntry = (eventId, entry) => {
+    const eventEntries = { ...this.state.eventEntries };
+    eventEntries[eventId] = entry;
+    this.setState({
+      eventEntries,
+      saveActivated: false
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -132,6 +141,7 @@ class Game extends Component {
             teams={this.state.teams}
             onDragEnd={this.onDragEnd}
             saveActivated={this.state.saveActivated}
+            saveEntry={this.saveEntry}
           />
           <InfoDrawer
             profile={this.state.profile}
