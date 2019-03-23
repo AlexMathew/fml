@@ -11,7 +11,7 @@ from .models import Player
 class UserNode(DjangoObjectType):
     class Meta:
         model = get_user_model()
-        only_fields = ('id', 'username', 'email')
+        only_fields = ('id', 'username')
 
 
 class PlayerNode(DjangoObjectType):
@@ -44,13 +44,12 @@ class CreatePlayer(graphene.relay.ClientIDMutation):
 
     class Input:
         username = graphene.String()
-        email = graphene.String()
         password = graphene.String()
 
     def mutate_and_get_payload(self, info, **input):
         user = get_user_model()(
             username=input.get('username'),
-            email=input.get('email'),
+            email=input.get('username'),
         )
         user.set_password(input.get('password'))
         user.save()

@@ -15,7 +15,6 @@ export const ME_QUERY = gql`
       user {
         id
         username
-        email
       }
       createdAt
       marblelympicsParticipated(marblelympics_Active: true) {

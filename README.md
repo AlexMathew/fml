@@ -10,7 +10,6 @@ Hopefully, will be done before ML2019.
 mutation {
   createPlayer(input: {
     username: "johndoe",
-    email: "johndoe@gmail.com",
     password: "password"
   }) {
     player {
@@ -19,7 +18,6 @@ mutation {
       user {
         id
         username
-        email
       }
     }
   }
@@ -89,7 +87,6 @@ query {
     user {
       id
       username
-      email
     }
     createdAt
     marblelympicsParticipated(marblelympics_Active: true) {
