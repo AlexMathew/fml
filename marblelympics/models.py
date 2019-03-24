@@ -68,6 +68,14 @@ class Marblelympics(models.Model):
         return count
 
 
+def validate_entry_selections_string(value):
+    try:
+        _ = json.loads(value)
+
+    except json.JSONDecodeError:
+        raise ValidationError(f'Selections should be a valid JSON string')
+
+
 class Event(models.Model):
     ml = models.ForeignKey(
         Marblelympics, on_delete=models.CASCADE, related_name='events'
@@ -79,6 +87,12 @@ class Event(models.Model):
     )
     scoring_status = models.IntegerField(
         choices=enum_to_choices(constants.EventScoringStatus), default=1
+    )
+    results = models.CharField(
+        max_length=2000,
+        null=False,
+        default='{}',
+        validators=[validate_entry_selections_string]
     )
 
     class Meta:
@@ -133,18 +147,10 @@ class FantasyPlayer(models.Model):
         ]
 
     def __repr__(self):
-        return f'{self.marblelympics} - {self.player} - Points: {self.points} - Rank: {self.rank}'
+        return f'{self.marblelympics} - {self.player} - Overall Points: {self.points} - Overall Rank: {self.rank}'
 
     def __str__(self):
-        return f'{self.marblelympics} - {self.player} - Points: {self.points} - Rank: {self.rank}'
-
-
-def validate_entry_selections_string(value):
-    try:
-        _ = json.loads(value)
-
-    except json.JSONDecodeError:
-        raise ValidationError(f'Selections should be a valid JSON string')
+        return f'{self.marblelympics} - {self.player} - Overall Points: {self.points} - Overall Rank: {self.rank}'
 
 
 class PlayerEntry(models.Model):
@@ -174,10 +180,10 @@ class PlayerEntry(models.Model):
         ordering = ['event', 'rank']
 
     def __repr__(self):
-        return f'{self.event} - {self.player} - Points: {self.points} - Rank: {self.rank}'
+        return f'{self.event} - {self.player} - Event Points: {self.points} - Event Rank: {self.rank}'
 
     def __str__(self):
-        return f'{self.event} - {self.player} - Points: {self.points} - Rank: {self.rank}'
+        return f'{self.event} - {self.player} - Event Points: {self.points} - Event Rank: {self.rank}'
 
 
 @receiver(pre_save, sender=Marblelympics)

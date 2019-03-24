@@ -36,9 +36,15 @@ class MLNode(DjangoObjectType):
         return self.player_count
 
 
+class SelectionNode(graphene.ObjectType):
+    position = graphene.Int()
+    team = graphene.Field(TeamNode)
+
+
 class EventNode(DjangoObjectType):
     status = graphene.Int()
     entry_count = graphene.Int()
+    results = graphene.List(SelectionNode)
 
     class Meta:
         model = Event
@@ -51,6 +57,16 @@ class EventNode(DjangoObjectType):
     def resolve_entry_count(self, info, **kwargs):
         return self.entry_count
 
+    def resolve_results(self, info, **kwargs):
+        results = json.loads(self.results)
+        return [
+            SelectionNode(
+                position=int(position),
+                team=Team.objects.get(name=name),
+            )
+            for position, name in results.items()
+        ]
+
 
 class FantasyPlayerNode(DjangoObjectType):
     class Meta:
@@ -59,11 +75,6 @@ class FantasyPlayerNode(DjangoObjectType):
         filter_fields = {
             'marblelympics__active': ['exact'],
         }
-
-
-class SelectionNode(graphene.ObjectType):
-    position = graphene.Int()
-    team = graphene.Field(TeamNode)
 
 
 class PlayerEntryNode(DjangoObjectType):
