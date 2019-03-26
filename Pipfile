@@ -17,6 +17,7 @@ boto3 = "*"
 redis = "*"
 mysqlclient = "*"
 django-cors-headers = "*"
+celery = "*"
 
 [requires]
 python_version = "3.7"
