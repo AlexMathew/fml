@@ -61,7 +61,7 @@ services:
     depends_on:
       - db
       - redis
-    command: celery -A fml beat --loglevel=info
+    command: celery -A fml beat --loglevel=info  --pidfile=/opt/celeryd.pid
     restart: on-failure:5
     volumes:
       - .:/code

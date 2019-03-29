@@ -118,3 +118,4 @@ dmypy.json
 
 .vscode
 .pep8
+celeryd.pid

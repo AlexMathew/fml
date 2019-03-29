@@ -1,8 +1,10 @@
-from helpers.instances import redis
+from fml.celery import app
 from helpers import constants
-from marblelympics.models import Marblelympics, Event
+from helpers.instances import redis
+from marblelympics.models import Event, Marblelympics
 
 
+@app.task(name="cache_ml_player_count")
 def cache_ml_player_count(*args, **kwargs):
     for ml in Marblelympics.objects.all():
         print('CACHE ML PLAYER COUNT - ', ml)
@@ -13,6 +15,7 @@ def cache_ml_player_count(*args, **kwargs):
         )
 
 
+@app.task(name="cache_event_player_count")
 def cache_event_player_count(*args, **kwargs):
     for event in Event.objects.all():
         print('CACHE EVENT PLAYER COUNT - ', event)

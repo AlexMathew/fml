@@ -18,7 +18,7 @@ app.conf.update(
     CELERY_TASK_RESULT_EXPIRES=3600,
     CELERY_TIMEZONE=settings.TIME_ZONE,
     CELERY_IMPORTS=(
-
+        'functions.cache',
     ),
 )
 
@@ -26,11 +26,11 @@ app.autodiscover_tasks()
 
 CELERY_BEAT_SCHEDULE = {
     'cache_ml_player_count': {
-        'task': 'fml.functions.cache.cache_ml_player_count',
-        'schedule': crontab(minute='*/60'),
+        'task': 'functions.cache.cache_ml_player_count',
+        'schedule': crontab(minute='*/1'),
     },
     'cache_event_player_count': {
-        'task': 'fml.functions.cache.cache_event_player_count',
-        'schedule': crontab(minute='*/30'),
+        'task': 'functions.cache.cache_event_player_count',
+        'schedule': crontab(minute='*/1'),
     },
 }
