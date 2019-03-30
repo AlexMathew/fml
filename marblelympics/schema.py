@@ -49,7 +49,7 @@ class EventNode(DjangoObjectType):
     class Meta:
         model = Event
         interfaces = (graphene.relay.Node,)
-        exclude_fields = ('scoring_status')
+        exclude_fields = ('scoring_status', 'results')
         filter_fields = {
             'ml__active': ['exact'],
         }
