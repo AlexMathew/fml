@@ -36,36 +36,6 @@ services:
     volumes:
       - fml-data-redis:/data
 
-  celery:
-    container_name: fml-celery
-    env_file:
-      - ops/env.sh
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-      - redis
-    command: celery -A fml worker --concurrency=20 --loglevel=info
-    restart: on-failure:5
-    volumes:
-      - .:/code
-
-  celery-beat:
-    container_name: fml-celery-beat
-    env_file:
-      - ops/env.sh
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-      - redis
-    command: celery -A fml beat --loglevel=info  --pidfile=/opt/celeryd.pid
-    restart: on-failure:5
-    volumes:
-      - .:/code
-
 volumes:
   fml-data-mysql:
   fml-data-redis:

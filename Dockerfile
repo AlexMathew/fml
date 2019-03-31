@@ -1,11 +1,7 @@
-FROM python:3.7-slim
+FROM lambci/lambda:build-python3.7
 
-ENV PYTHONUNBUFFERED 1
-ENV LC_ALL C.UTF-8
-ENV LANG C.UTF-8
-
-RUN apt-get update -y 
-RUN apt-get install default-libmysqlclient-dev gcc git -y
+RUN yum update -y 
+RUN yum install default-libmysqlclient-dev python3-devel mysql-devel mariadb-devel gcc git -y
 RUN pip install pipenv
 
 RUN mkdir /code

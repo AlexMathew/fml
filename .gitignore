@@ -116,6 +116,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+bin/
+include/
+share/
+man/
+
 .vscode
 .pep8
 celeryd.pid
