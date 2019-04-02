@@ -15,3 +15,8 @@ class EventScoringStatus(Enum):
     OPEN = 1
     ONGOING = 2
     COMPLETED = 3
+
+
+class ScoreValues(Enum):
+    EXACT = 5
+    PODIUM = 2
