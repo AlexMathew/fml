@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "aws_region": "us-east-1",
+        "django_settings": "fml.settings",
+        "profile_name": "default",
+        "project_name": "fml",
+        "runtime": "python3.7",
+        "s3_bucket": "zappa-yp9igab5t",
+        "vpc_config": {
+            "SubnetIds": ["subnet-0c7f25475c79c70c5", "subnet-0d2c2106f3205b845"],
+            "SecurityGroupIds": ["sg-0f3c11b2f0a43b483"]
+        }
+    }
+}
