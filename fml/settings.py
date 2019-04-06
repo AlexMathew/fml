@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+if 'SERVERTYPE' in os.environ and os.environ['SERVERTYPE'] == 'AWS Lambda':
+    env_path = Path('../ops/.env')
+    load_dotenv(dotenv_path=env_path)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,6 +48,7 @@ INSTALLED_APPS = [
     'players',
     'marblelympics',
     'corsheaders',
+    'zappa_django_utils',
 ]
 
 MIDDLEWARE = [

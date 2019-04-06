@@ -6,8 +6,6 @@ verify_ssl = true
 [dev-packages]
 isort = "*"
 ipdb = "*"
-zappa = "*"
-zappa-django-utils = "*"
 
 [packages]
 django = "*"
@@ -18,9 +16,12 @@ django-graphql-jwt = "*"
 ipython = "*"
 boto3 = "*"
 redis = "*"
-mysqlclient = "*"
+mysqlclient = "==1.3.14"
 django-cors-headers = "*"
 celery = "*"
+python-dotenv = "*"
+zappa = "*"
+zappa-django-utils = "*"
 
 [requires]
 python_version = "3.7"

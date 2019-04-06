@@ -2,13 +2,24 @@
     "dev": {
         "aws_region": "us-east-1",
         "django_settings": "fml.settings",
-        "profile_name": "default",
+        "profile_name": "fml",
         "project_name": "fml",
         "runtime": "python3.7",
-        "s3_bucket": "zappa-yp9igab5t",
+        "s3_bucket": "fml-zappa-bucket",
+        "timeout_seconds": 900,
+        "manage_roles": false,
+        "role_name": "ZappaFML",
+        "role_arn": "arn:aws:iam::203713898886:role/ZappaFML",
         "vpc_config": {
-            "SubnetIds": ["subnet-0c7f25475c79c70c5", "subnet-0d2c2106f3205b845"],
-            "SecurityGroupIds": ["sg-0f3c11b2f0a43b483"]
+            "SubnetIds": [
+                "subnet-0a1dd1f9add6aec63",
+                "subnet-0f0194e5a742891b8",
+                "subnet-0ceb66931a96ae41b",
+                "subnet-0e8aa8263e0ccebf6",
+                "subnet-0aa9fc7d122482df4",
+                "subnet-0b53d2a4bc2941db2"
+            ],
+            "SecurityGroupIds": ["sg-06d07fe8d5da9bdf7"]
         }
     }
 }
