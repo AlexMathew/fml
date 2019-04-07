@@ -1,11 +1,12 @@
 {
     "dev": {
-        "slim_handler": false,
+        "slim_handler": true,
         "aws_region": "us-east-1",
         "django_settings": "fml.settings",
         "profile_name": "fml",
         "project_name": "fml",
         "runtime": "python3.7",
+        "log_level": "DEBUG",
         "s3_bucket": "fml-zappa-bucket",
         "timeout_seconds": 900,
         "manage_roles": false,
