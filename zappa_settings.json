@@ -1,5 +1,6 @@
 {
     "dev": {
+        "slim_handler": false,
         "aws_region": "us-east-1",
         "django_settings": "fml.settings",
         "profile_name": "fml",
