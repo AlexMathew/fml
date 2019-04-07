@@ -11,13 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from pathlib import Path
-
-from dotenv import load_dotenv
-
-if 'SERVERTYPE' in os.environ and os.environ['SERVERTYPE'] == 'AWS Lambda':
-    env_path = Path('../ops/.env')
-    load_dotenv(dotenv_path=env_path)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -90,11 +83,11 @@ WSGI_APPLICATION = 'fml.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_DATABASE'),
-        'USER': os.getenv('MYSQL_USER'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-        'HOST': os.getenv('MYSQL_HOST'),
-        'PORT': os.getenv('MYSQL_PORT'),
+        'NAME': os.getenv('FML_MYSQL_DATABASE'),
+        'USER': os.getenv('FML_MYSQL_USER'),
+        'PASSWORD': os.getenv('FML_MYSQL_PASSWORD'),
+        'HOST': os.getenv('FML_MYSQL_HOST'),
+        'PORT': os.getenv('FML_MYSQL_PORT'),
     }
 }
 

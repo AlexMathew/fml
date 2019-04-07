@@ -7,7 +7,7 @@ import boto3
 
 
 def queue_name(x):
-    return f'dev_{x}' if os.getenv('IS_SERVER', default='').lower() is 'true' else x
+    return f'dev_{x}' if os.getenv('DEBUG', default='').lower() is 'false' else x
 
 
 class SQS(object):

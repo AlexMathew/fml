@@ -28,7 +28,7 @@ class Team(models.Model):
 
     @property
     def cdn_image_url(self):
-        return md5(f"fml{'prod' if os.getenv('IS_SERVER') == 'true' else 'dev'}_{self.image or ''}".encode('utf-8')).hexdigest()
+        return md5(f"fml{'prod' if os.getenv('DEBUG') == 'false' else 'dev'}_{self.image or ''}".encode('utf-8')).hexdigest()
 
 
 class Marblelympics(models.Model):
@@ -210,12 +210,12 @@ def update_cdn_image(sender, instance, **kwargs):
         image_location = f'/tmp/{instance.cdn_image_url}.{image_format}'
         urlretrieve(instance.image, image_location)
         s3.upload_file(
-            bucket_name=os.getenv('TEAM_LOGO_BUCKET_NAME'),
+            bucket_name=os.getenv('FML_TEAM_LOGO_BUCKET_NAME'),
             destination=f'{instance.cdn_image_url}.{image_format}',
             source_file=image_location,
             content_type=f"image/{'jpeg' if image_format == 'jpg' else image_format}",
         )
-        instance.cdn_image = f"http://{os.getenv('CLOUDFRONT_URL')}/{instance.cdn_image_url}.{image_format}"
+        instance.cdn_image = f"http://{os.getenv('FML_CLOUDFRONT_URL')}/{instance.cdn_image_url}.{image_format}"
 
 
 @receiver(pre_save, sender=PlayerEntry)
