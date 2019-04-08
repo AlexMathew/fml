@@ -14,6 +14,7 @@ WORKDIR /code
 
 RUN pipenv install --system
 
-EXPOSE 8000
+EXPOSE 8800
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+COPY ./start.sh /code/
+ENTRYPOINT ["/code/start.sh"]

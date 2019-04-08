@@ -125,3 +125,5 @@ man/
 .pep8
 celeryd.pid
 *.zip
+
+ops/prod.sh
