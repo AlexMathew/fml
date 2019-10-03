@@ -127,3 +127,4 @@ celeryd.pid
 *.zip
 
 ops/prod.sh
+ops/env.sh
