@@ -2,6 +2,8 @@
 
 Hopefully, will be done before [ML2019](https://www.youtube.com/playlist?list=PLSmWeUDtr9fDKXL0UDaCEFxkb9fbQEOZH).
 
+This + [this](https://github.com/AlexMathew/fml-ui) = [this](https://onedrive.live.com/?cid=f23d126a9f095242&id=F23D126A9F095242%212770&ithint=video,mp4&authkey=!AHMvhbkj8PZN6kc)
+
 ## GraphQL queries
 
 - To create a new user
