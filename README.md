@@ -1,6 +1,6 @@
 # FANTASY MARBLELYMPICS
 
-Hopefully, will be done before ML2019.
+Hopefully, will be done before [ML2019](https://www.youtube.com/playlist?list=PLSmWeUDtr9fDKXL0UDaCEFxkb9fbQEOZH).
 
 ## GraphQL queries
 
